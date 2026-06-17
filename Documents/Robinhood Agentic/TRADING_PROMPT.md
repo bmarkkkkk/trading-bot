@@ -128,7 +128,7 @@ Decision framework — actively manage every position every run:
 - **ADD (pyramid)** — if a position is working and pulling back to a higher low on declining volume, ADD to the winner. Move your size into what's working. Only pyramid once, and only if you have buying power.
 
 **Options-specific position management (critical — these are decaying assets):**
-- **Theta decay accelerates near expiry.** At +50–100% on premium, **trim about half to bank profit and let the rest run** with a wide trail (per Step 4b) — don't full-exit a working option just because it hit a target; the runners are where the real money is. Only fully exit when the thesis is done or momentum clearly rolls over.
+- **Theta decay accelerates near expiry, but don't let that scare you out of a runner.** At ~+80–100% on premium, take **house money** (sell just enough to recover cost basis) and let the rest run FREE on a wide trail (per Step 4b). On the highest-conviction A+ runners in a trending tape, hold the full position with a wide trail. Don't full-exit a working option at a round-number target — the runners are where the real money is. Only fully exit when the thesis is done or momentum clearly rolls over. Roll near 7 DTE to keep a live runner alive past the theta cliff.
 - **Don't panic-cut on normal volatility.** The wide catastrophic stop (~55–65%) handles a real collapse automatically. On a run, only cut early if the THESIS is broken (chart structure breaks, catalyst reverses) — not just because premium dipped on intraday noise. Distinguish "thesis broken" (exit) from "breathing" (hold).
 - **DTE (days to expiration) discipline:** If a contract is within **7 DTE and not clearly working**, close it — the gamma/theta cliff in the final week destroys premium fast. Never hold a losing option into expiration week hoping for a reversal.
 - **DTE on winners:** Even a working option within 7 DTE should be rolled (close it, and if the thesis holds, open a fresh 2–6 week contract) rather than held into the decay cliff.
@@ -451,15 +451,25 @@ For OPTION long positions (calls or puts):
 
 **When you close or adjust a position manually on a later run: CANCEL the resting protective stop first** (cancel_equity_order / cancel_option_order), then place the new order — otherwise you risk a double-exit.
 
-### Step 4b: Let winners RUN — scale out, trail wide (do NOT choke them)
+### Step 4b: CAPTURE THE FULL RUNNER — let winners run, don't choke them
 
-**Core principle: risk management exists to prevent ruin, NOT to strangle winners.** The money is made on the occasional big runner — a tight stop that flushes you on normal volatility is as costly as a loss. Give winners room to breathe. Manage them by scaling out and trailing WIDE, not by tight stops.
+**The math of this whole strategy: a handful of big runners pay for everything else. Capturing the FULL move on a runner matters more than banking small wins.** With long options your max loss is already capped at premium — so the downside is bounded no matter what, which is exactly what lets you hold runners aggressively. Don't trade like you can get crushed by letting a winner run; you can't. The crush risk is capped; the upside is not.
 
 On each run, for a position moving in your favor:
-- **Don't touch the stop while the trade is just getting going.** Let it breathe through normal noise. Only start trailing once it's *clearly* working (roughly **+35–50%** on an option, or a clean new higher-high on equity) — not at the first +20% wiggle.
-- **Scale out instead of all-or-nothing.** At a strong gain (~+50–100% on an option), **trim ~half** to bank profit, then **let the rest RUN** with a wide trail. This locks gains while keeping a lottery ticket on the home run. Never full-exit a working position into a target just because it hit a round number — that's how you cap your best trades.
-- **Trail WIDE on the runner.** Trail below the most recent higher-low (equity) or roughly the prior swing low in premium (options) — give it 20–30% of room, not a tight leash. The goal is to capture a multi-day/multi-leg move, not to flinch at the first red candle.
-- A winner round-tripping all the way to a loss is a failure; a winner you trimmed-and-trailed that pulls back modestly before running further is the system working. Bias toward letting it run.
+
+- **Let it breathe — don't touch the stop early.** Through the first move, leave the wide catastrophic stop where it is. Don't start trailing until it's *clearly* working (roughly **+50%+** on an option, or a clean new higher-high on equity). Flinching early is how you miss the 200% trade.
+
+- **De-risk to "house money," then let the rest run FREE.** When a position is up strongly (~+80–100%), sell just enough to **recover your original cost basis** — not half, just enough to make the remainder a free roll. Now the rest of the position is playing with pure profit and you can let it run to the moon with zero risk of giving back your capital. This is how you keep maximum upside while removing all downside on the trade. Prefer this over a mechanical "trim half."
+
+- **On the highest-conviction A+ runners in a TRENDING regime: consider holding the FULL position** with only a wide trailing stop — no trim at all. The biggest gains come from not cutting the winner. Reserve this for clean trends with strong momentum.
+
+- **Trail WIDE, and widen it as momentum strengthens.** Give a runner 25–40% of room (below the most recent higher-low for equity, prior swing low in premium for options). A strong trend earns MORE room, not less. The trail exists to catch the eventual real reversal, not to flinch at red candles.
+
+- **Amplify runners — pyramid and roll.** If a runner pulls back to a higher low on light volume and you have buying power, ADD to it (pyramid once) to press the winner. As a runner approaches 7 DTE, ROLL it (close, reopen a further-dated contract) so the move can keep paying past the theta cliff instead of dying on expiration.
+
+- **Small-contract reality:** with only 1 contract you can't scale — it's hold-all or exit-all, so default to HOLDING the runner with a wide trail. When conviction on entry is high, size entries to **2–3 contracts** specifically so you have the option to take house money off and let the rest run.
+
+A winner round-tripping all the way to a loss is a failure; a winner you let run — banking cost basis and riding the rest wide — is the system working exactly as designed. **Bias hard toward letting it run.**
 
 **Sizing by setup quality:**
 - **A+ setup** (clean TA + fresh hard catalyst + leading sector + strong market environment): deploy 60–80% of buying power. This is the rare "all systems go" setup — size aggressively.
