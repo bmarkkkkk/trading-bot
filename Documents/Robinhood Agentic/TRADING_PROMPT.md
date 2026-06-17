@@ -128,8 +128,8 @@ Decision framework — actively manage every position every run:
 - **ADD (pyramid)** — if a position is working and pulling back to a higher low on declining volume, ADD to the winner. Move your size into what's working. Only pyramid once, and only if you have buying power.
 
 **Options-specific position management (critical — these are decaying assets):**
-- **Theta decay accelerates near expiry.** Take profit at +50–100% on premium; don't get greedy and watch theta erode a winner.
-- **Cut at -50% on premium** — same as equity rule but more urgent, options can go to zero.
+- **Theta decay accelerates near expiry.** At +50–100% on premium, **trim about half to bank profit and let the rest run** with a wide trail (per Step 4b) — don't full-exit a working option just because it hit a target; the runners are where the real money is. Only fully exit when the thesis is done or momentum clearly rolls over.
+- **Don't panic-cut on normal volatility.** The wide catastrophic stop (~55–65%) handles a real collapse automatically. On a run, only cut early if the THESIS is broken (chart structure breaks, catalyst reverses) — not just because premium dipped on intraday noise. Distinguish "thesis broken" (exit) from "breathing" (hold).
 - **DTE (days to expiration) discipline:** If a contract is within **7 DTE and not clearly working**, close it — the gamma/theta cliff in the final week destroys premium fast. Never hold a losing option into expiration week hoping for a reversal.
 - **DTE on winners:** Even a working option within 7 DTE should be rolled (close it, and if the thesis holds, open a fresh 2–6 week contract) rather than held into the decay cliff.
 - **IV crush watch:** If you're holding through an earnings/event and IV collapses, the premium can drop even when direction is right. Exit event-driven option trades right after the catalyst resolves.
@@ -445,18 +445,21 @@ For EQUITY long positions:
 For OPTION long positions (calls or puts):
 - place_option_order, leg: same option_id, side=sell, position_effect=close, type=stop_market, time_in_force=gtc, stop_price below current bid
 - Use stop_market (guaranteed exit) rather than stop_limit here — options drop fast and a missed fill defeats the purpose; the liquidity filters (OI≥200, tight spread) keep slippage contained
-- Set the stop so max loss on the premium is **~40–50%** of what you paid (matches the -50% cut rule, but now automatic)
+- **This is a CATASTROPHIC floor, not an active-management tool. Set it WIDE — ~55–65% below entry premium** — so it only fires on a real thesis-breaking collapse, NOT on normal intraday breathing. Options routinely swing 20–40% on noise; a tight stop just donates the position to a wick. Softer deterioration (thesis weakening, momentum fading) is handled by your discretion on each run, not by this hard floor.
 
 **Record the protective stop's order_id in trade_journal.md** alongside the position. You'll need it to cancel/replace when you adjust (trailing) or close manually.
 
 **When you close or adjust a position manually on a later run: CANCEL the resting protective stop first** (cancel_equity_order / cancel_option_order), then place the new order — otherwise you risk a double-exit.
 
-### Step 4b: Trail the stop on winners (lock in gains, kill round-trips)
+### Step 4b: Let winners RUN — scale out, trail wide (do NOT choke them)
 
-On each run, for any position that has moved in your favor, RAISE the protective stop (never lower it) by cancel + replace:
-- Once a position is **up ~20%+**, move the stop to **breakeven** — the trade can no longer become a loser
-- As it runs further, trail the stop below the most recent higher-low (equity) or to lock ~50% of peak premium gain (options)
-- This converts winners into "free rolls" and is how you let upside run without giving it all back. A winner that round-trips to a loss is a process failure the trailing stop prevents.
+**Core principle: risk management exists to prevent ruin, NOT to strangle winners.** The money is made on the occasional big runner — a tight stop that flushes you on normal volatility is as costly as a loss. Give winners room to breathe. Manage them by scaling out and trailing WIDE, not by tight stops.
+
+On each run, for a position moving in your favor:
+- **Don't touch the stop while the trade is just getting going.** Let it breathe through normal noise. Only start trailing once it's *clearly* working (roughly **+35–50%** on an option, or a clean new higher-high on equity) — not at the first +20% wiggle.
+- **Scale out instead of all-or-nothing.** At a strong gain (~+50–100% on an option), **trim ~half** to bank profit, then **let the rest RUN** with a wide trail. This locks gains while keeping a lottery ticket on the home run. Never full-exit a working position into a target just because it hit a round number — that's how you cap your best trades.
+- **Trail WIDE on the runner.** Trail below the most recent higher-low (equity) or roughly the prior swing low in premium (options) — give it 20–30% of room, not a tight leash. The goal is to capture a multi-day/multi-leg move, not to flinch at the first red candle.
+- A winner round-tripping all the way to a loss is a failure; a winner you trimmed-and-trailed that pulls back modestly before running further is the system working. Bias toward letting it run.
 
 **Sizing by setup quality:**
 - **A+ setup** (clean TA + fresh hard catalyst + leading sector + strong market environment): deploy 60–80% of buying power. This is the rare "all systems go" setup — size aggressively.
