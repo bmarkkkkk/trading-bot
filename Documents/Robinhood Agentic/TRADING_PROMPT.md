@@ -284,15 +284,31 @@ Until then: TA + catalyst + market sentiment is the full universe input. Don't w
 Pull every ticker mentioned across all queries. Note the setup type for each (breakout / pullback / flag / gap-and-go / RS leader). **Aim for at least 30 distinct names** before moving to Step 3b — a small universe is the leading cause of forced trades.
 
 **Technical setups to hunt for — BULLISH (for equity longs / call buys):**
-1. **Base breakout on volume** — break above multi-week consolidation on ≥1.5x avg volume (highest R/R setup in trading)
-2. **Bull flag continuation** — sharp move up, tight 2–5 day pullback on lower volume, then resumption
-3. **Higher-low pullback to 20/50 SMA** — uptrend intact, pulling back to support without breaking structure
-4. **Opening range breakout (intraday)** — first 30-min high taken out on volume in the 10:00–10:30 AM run
-5. **VWAP reclaim** — stock spent morning below VWAP, reclaims and holds with volume
-6. **Relative strength leader** — green while SPY is red, or up >2x SPY on green days
-7. **Gap-and-go** — opens gapped up, holds the gap, then pushes higher with volume
-8. **Base breakout / reversal from a bottom (Stage 1 → Stage 2)** — a beaten-down or sideways name that has STOPPED falling, built a multi-week base, and is now breaking ABOVE the base or reclaiming a key MA on a volume surge. This is NOT near a 52w high and that's fine — base breakouts and confirmed reversals are some of the best risk/reward longs (you're early, with a tight stop below the base). Requires strict confirmation (see disqualifier exception) so it never becomes a falling-knife catch.
-9. **Double bottom / higher-low reversal** — price tests support twice (or makes a higher low after a downtrend), then breaks above the interim swing high (neckline) on volume = confirmed turn.
+
+**IMPORTANT: being near a 52-week high is ONE valid setup, NOT a requirement. Most high-R/R bullish entries happen BELOW the highs — in bases, pullbacks, and reversals. Hunt all three zones below; do not over-weight Zone A.**
+
+**Zone A — Momentum / near highs** (the minority of good setups):
+1. **Breakout to new highs on volume** — clears prior resistance / 52w high on ≥1.5× volume
+2. **Gap-and-go / opening-range breakout** — gaps up, holds, pushes higher (intraday)
+3. **Relative-strength leader** — green while SPY is red, or up >2× SPY on green days
+4. **Bull flag near highs** — sharp move up, tight low-volume pullback, then resumption
+
+**Zone B — Pullback / continuation** (mid-trend, often well below the highs — buy the dip in an uptrend):
+5. **Higher-low pullback to the rising 20/50 EMA** — uptrend intact, pulls back to support without breaking structure, then turns up
+6. **Bull flag / pennant anywhere in the trend** — consolidation after a leg up, breaks the flag on volume
+7. **VWAP reclaim** — spent the morning below VWAP, reclaims and holds with volume
+8. **Ascending triangle** — series of higher lows pressing into flat resistance; the breakout is the trigger
+9. **Volatility contraction (VCP / coiling)** — range tightens on declining volume = a spring loading for a breakout
+
+**Zone C — Base / reversal** (below the MAs, bottoming — often the BEST risk/reward; you're early with a tight stop. ALL require the strict confirmation in the disqualifier exception so they're never falling knives):
+10. **Base breakout from long consolidation (Stage 1 → Stage 2)** — beaten-down name that STOPPED falling, based for weeks, now breaks above the base on a volume surge
+11. **Double bottom** — two tests of support hold, then a break above the interim swing high (neckline) on volume
+12. **Inverse head-and-shoulders** — classic bottom; the neckline break confirms the reversal
+13. **Cup-and-handle** — rounded base + a small low-volume pullback (the handle), then breakout
+14. **Falling-wedge breakout** — downtrend losing momentum (converging lower-highs/lower-lows), breaks the upper line up
+15. **Rounding bottom / saucer** — slow accumulation turn off a low
+16. **Downtrend-line break + 50 EMA reclaim** — price breaks the descending trendline AND reclaims/holds the 50 EMA on volume = trend change
+17. **Oversold mean-reversion bounce** — off major horizontal support or the 200 EMA, WITH a reversal candle (hammer/engulfing) + volume (not just "it's oversold")
 
 **Technical setups to hunt for — BEARISH (for PUT BUYS via options when available):**
 1. **Base breakdown on volume** — break BELOW multi-week consolidation/support on ≥1.5x avg volume (mirror of bullish breakout — same R/R quality)
