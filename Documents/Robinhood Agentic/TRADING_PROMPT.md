@@ -31,7 +31,7 @@ You run every 30 minutes. Every minute spent on unnecessary steps is a minute th
 - **Parallelize everything:** Call get_portfolio + get_equity_positions + get_option_positions simultaneously. Batch all WebSearch queries that are independent. Batch quote calls (up to 20 symbols per call).
 - **Skip what doesn't apply:** No positions? Skip Step 2 entirely. Markets closed? Log it and stop — don't run scans.
 - **Decision in one pass:** Don't deliberate across multiple rounds. Scan → rank → decide → execute. One cycle.
-- **Don't over-research:** 2–3 WebSearch queries to find movers, 1 Finviz fetch per top candidate. You're a trader, not an analyst writing a report.
+- **Don't over-research:** build the universe from Robinhood lists, pull candles (get_equity_historicals) on the top 8–10, decide. You're a trader, not an analyst writing a report.
 
 ## Time-of-Day Playbook (all times ET)
 Adapt your aggression and strategy to the session:
@@ -324,16 +324,10 @@ For BEARISH setups (put buy):
 - Bid/ask spread wider than expected (poor liquidity)
 - Average daily volume <500K shares (illiquid)
 
-**Critical — verify MA position from raw data, never from prose summaries:**
-When reading Finviz output, the SMA20/50/200 fields show the **percentage relationship of price to that MA**. Verify the sign yourself:
-- **Positive number** (e.g. "SMA20: +5%") = price is 5% ABOVE the 20 SMA → bullish structure, eligible for LONGS / CALLS
-- **Negative number** (e.g. "SMA20: -7%") = price is 7% BELOW the 20 SMA → bearish structure, eligible for PUTS
-- If a prose summary contradicts the raw percentages, trust the percentages. Always cross-check.
-- **Full bullish stack** (price > 20 > 50 > 200) = Stage 2 uptrend → LONG candidate
-- **Full bearish stack** (price < 20 < 50 < 200) = Stage 4 downtrend → PUT candidate
-- Mixed positioning (e.g., price > 200 but < 20) = consolidation / transition → WATCH, no trade
-
-**Authoritative OHLCV via get_equity_historicals (use on your final 1–3 candidates):** For the names you're about to trade, pull real price bars with get_equity_historicals (e.g. interval=day over the last 3–6 months, plus interval=30minute over the last few days for intraday structure). This gives you the ACTUAL chart — compute the real MA positions, the recent swing high/low (for stop placement), and ATR (average true range) to size a volatility-appropriate stop instead of a fixed %. This is the ground truth; Finviz prose has misled before. Use ATR to set stops: ~1.5–2× ATR below entry for equity, and place the option catastrophic stop with that move in mind.
+**MA stack determines direction-eligibility — computed from the raw Robinhood candles in Step 3b (not from any prose source):**
+- **Full bullish stack** (price > 20 > 50 > 200 EMA, MAs rising) = Stage 2 uptrend → LONG / CALL candidate
+- **Full bearish stack** (price < 20 < 50 < 200 EMA, MAs falling) = Stage 4 downtrend → PUT candidate
+- Mixed (e.g. price > 200 but < 20) = consolidation / transition → WATCH, no trade
 
 ---
 
@@ -341,21 +335,24 @@ When reading Finviz output, the SMA20/50/200 fields show the **percentage relati
 
 **First, rank the universe so the best names make the cut.** Don't deep-analyze a random 8 — quickly score all 30+ candidates on: (a) magnitude of the move (% from prior close), (b) volume confirmation (relative volume), (c) cleanliness of the setup type, (d) sector alignment with the day's leadership/weakness. Take the **top 8–10 by that composite** into deep TA. A great setup ranked #9 is worth more than a mediocre one ranked #2 — the ranking is what prevents you from missing the winner.
 
-For those top 8–10 names, WebFetch Finviz **in parallel**: `https://finviz.com/quote.ashx?t=SYMBOL`
+For the top 8–10 names, pull the **raw candles from Robinhood** — `get_equity_historicals` in parallel (NOT Finviz; you compute everything from the actual bars, the same data you'd use to draw the chart):
+- **Daily bars, ~6–12 months** (interval=day) — trend structure, MA stack, swing-based support/resistance
+- **Intraday bars, last 3–5 days** (interval=30minute) — current micro-structure and entry timing
 
-Read each chart holistically. The single question to answer: **"Is institutional money in control here, and is there clear room to run with a defined risk level?"**
+**Everything below is computed directly from those bars — this IS the authoritative chart read.** The single question: **"Is institutional money in control here, and is there clear room to run with a defined risk level?"** Compute and analyze:
 
-Consider the full picture:
-- **Trend structure:** Higher highs + higher lows (bullish), lower highs + lower lows (bearish), or sideways?
-- **Volume confirmation:** Is volume rising on up-days and fading on down-days (accumulation)? Or the opposite (distribution)?
-- **Position vs MAs:** Above all key MAs in proper stack (price > 20 > 50 > 200) = strong. Below 20 on weak volume = pause. Below 50 = caution.
-- **Momentum:** MACD crossing up + RSI rising into the 50–70 zone = healthy. MACD rolling over + RSI fading from 70+ = exhaustion.
-- **Pattern stage:** Early breakout = best R/R. Mid-trend continuation = good. Late-stage parabolic blow-off = avoid.
-- **Sector context:** Is the sector leading or lagging? Trade leaders in leading sectors.
-- **Distance to resistance:** How far to next major level? Need at least 2.5:1 reward-to-risk to take the trade.
-- **Insider activity:** Recent buying = bullish confirm. Recent cluster selling = distribution red flag.
+1. **MA stack** — EMA 20/50/100/200 from the closes. Bullish stack (price>20>50>200, rising) = uptrend/long; bearish (price<20<50<200, falling) = downtrend/put; mixed = WATCH. This is the trend backbone and the direction gate.
+2. **Price-action structure** — map the recent swing highs and swing lows from the bars. Higher-highs + higher-lows = uptrend; lower-highs + lower-lows = downtrend; equal pivots = range. Read it from the actual pivots, not a label.
+3. **RSI(14)** from closes — 50–70 rising = healthy; >70 = extended; <30 = oversold. Watch divergence (price new high but RSI lower = weakening, and vice versa).
+4. **Volume / price relationship** — per bar: volume rising on UP-bars = accumulation (bullish); rising on DOWN-bars = distribution (bearish). A breakout on weak volume is suspect. Compute relative volume (recent vs average) — this is the institutional footprint, straight off the candles.
+5. **Candlestick patterns at key levels** — read the actual recent candles: bullish/bearish engulfing, hammer / shooting-star, doji (indecision), inside/outside bars, wide-range conviction candles. A hammer at support or a bullish engulfing off a higher-low is a real call trigger; a shooting-star / bearish engulfing at resistance is a put trigger.
+6. **Chart patterns from the bars** — detect from the structure: base breakout (tight range → break on volume), bull/bear flag (sharp move → tight counter-pullback → resume), higher-low pullback to the 20/50 EMA, double top/bottom, head-and-shoulders (via the swing sequence), failed breakout (pokes past a level then rejects — a trap).
+7. **Support / resistance** — concrete prices from actual swing highs/lows and the highest-volume bars (where the most shares changed hands). These are your entry, stop, and target levels.
+8. **ATR(14)** from the bars — volatility for stop sizing (~1.5–2× ATR; see Step 4a).
 
-**Context matters more than any single indicator.** RSI 75 on a fresh breakout from a 3-month base is very different from RSI 75 after a 3-week parabolic run. A stock below its 50 SMA can be a great long if it's bouncing off major horizontal support on high volume. Read the situation, not the number.
+**Context matters more than any single indicator.** RSI 75 on a fresh breakout from a 3-month base is very different from RSI 75 after a 3-week parabolic run. A stock below its 50 EMA can be a great long if it's bouncing off major horizontal support on high volume. Read the situation across all eight, not one number in isolation.
+
+**Optional — Finviz ONLY for what Robinhood data doesn't carry** (insider-cluster activity, short-float %). These aren't in the Robinhood feed. If you want them as confirmation, one Finviz fetch on a top finalist adds them. If you skip it, lean harder on the volume/price distribution read (#4) — the candles show the same smart-money accumulation/distribution footprint.
 
 **TA verdict for each:**
 - **TRADE** — clean structure, defined entry, defined stop, 2.5:1+ reward-to-risk to next resistance
@@ -418,12 +415,12 @@ BEARISH confirmation:
 
 **3d. Market environment check (CONTEXT — quick)**
 
-Before placing any trade, sanity-check the broader environment:
+Before placing any trade, sanity-check the broader environment — **from Robinhood data**:
 
-- **SPY trend:** Are major indexes in uptrend (above 50 SMA) or correcting?
-- **VIX level:** WebSearch `VIX today current level` — under 18 = risk-on, 18–25 = neutral, over 25 = risk-off
-- **Sector leadership:** Which sector ETFs are green/leading today (XLK, XLE, XLF, XLV, XLY)? Trade leaders in leading sectors when possible.
-- **Breadth:** Are advancers > decliners on the major indexes today?
+- **SPY trend:** get_equity_quotes + get_equity_historicals on SPY — above/below its 20/50 EMA, trending or correcting? (compute from the bars, same as any candidate)
+- **VIX level:** get_index_quotes for VIX (it's an index) if available; else WebSearch `VIX today` as fallback. Under 18 = risk-on, 18–25 = neutral, over 25 = risk-off.
+- **Sector leadership:** get_equity_quotes on the sector ETFs (XLK, XLE, XLF, XLV, XLY) — which are green/leading today vs prior close? Trade leaders in leading sectors. (This also tells you which sector lists to mine in 3a.0.)
+- **Breadth:** infer from how broadly your sector-ETF quotes are green vs red; WebSearch advancers/decliners only if you want a precise read.
 
 **Environment rules:**
 - VIX spiking + SPY breaking down = reduce position sizing or sit out
