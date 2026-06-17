@@ -277,7 +277,7 @@ While ticker-level options flow requires a paid data feed (not enabled at this a
   - **> 1.0** = bearish skew (puts dominant; risk-off, consider lighter sizing)
   - Use as environment context in Step 3d, not as a per-ticker signal
 
-**Note on ticker-level unusual options activity:** All reliable free sources are gated (Barchart, MarketChameleon) or blocked from scraping (Yahoo, Nasdaq). Paid data feeds (Unusual Whales $48/mo, Tradier $10/mo standalone) are not justified at the current account size — they'd eat 13–64% in annual data costs against a $900 base. **Revisit when the account reaches $5,000+** where the data cost becomes a small fraction of capital.
+**Note on ticker-level unusual options activity:** You now derive a real ticker-level flow read directly from Robinhood (`get_option_quotes` volume + open interest) — see **Step 3c+**. No paid feed or scraping needed. Paid feeds (Unusual Whales, etc.) would only add sweep/block/tape granularity (at-ask vs at-bid) on top of what you already compute from the chain — deferred until the account is much larger and that extra granularity is worth the cost.
 
 Until then: TA + catalyst + market sentiment is the full universe input. Don't waste cycles trying to scrape gated options data.
 
@@ -410,6 +410,29 @@ BEARISH confirmation:
 - **Catalyst contradicting the chart** → PASS, something is off (e.g., bullish earnings beat but stock breaking down = "buy the rumor, sell the news" already played out)
 
 **The catalyst is confirmation, never the reason. A clean chart trades on its own merit — in either direction.**
+
+---
+
+**3c+. Options-flow confirmation (from Robinhood `get_option_quotes` — when it aligns with the TA, it's a HUGE tell)**
+
+Unusual options volume is smart money positioning ahead of a move. You can derive a real flow read from Robinhood's own option data — no paid feed needed. For each TRADE-verdict candidate, check the flow as CONFIRMATION:
+
+1. get_option_chains (underlying) → the near-term expirations (this week, next 1–2 weeks, front monthly)
+2. get_option_instruments → strikes around the money (±~15% of spot) for those expirations
+3. get_option_quotes (batch ≤20 instrument_ids) → read **volume** and **open_interest** per contract
+
+Compute the flow signals:
+- **Volume / Open-Interest ratio (the key unusual-activity tell):** a contract with **volume > OI** means more contracts traded today than existed at the open = FRESH aggressive positioning, not closing. **Volume > 2× OI = strongly unusual.** This is the #1 flow signal and it's fully computable from the data.
+- **Call vs put volume skew:** sum call volume vs put volume across the near-term chain. **>2:1 calls = bullish flow; >2:1 puts = bearish flow.**
+- **Concentration & location:** a single strike/expiration with outsized volume = a directional bet. OTM call volume = bullish speculation; OTM put volume = bearish bets/hedging.
+
+**How to use it — flow is a CONFIRMATION MULTIPLIER, not a standalone trigger:**
+- **Bullish TA setup + bullish flow** (heavy call volume, volume>OI, concentrated near-term/OTM calls) = **HUGE confirmation — bump the setup up a tier (A → A+) and size up.** This is the "everything lines up" trade you want most.
+- **Bearish TA setup + bearish flow** (heavy put volume, volume>OI) = same — bump and size up.
+- **Flow CONTRADICTS the TA** (bullish chart but heavy put volume, or vice versa) = yellow flag — something's off; reduce size or skip.
+- **No notable flow** = neutral; trade on the TA alone (flow is a bonus, never required — a clean chart still trades).
+
+**Honest limits of Robinhood flow data:** get_option_quotes gives aggregate volume + OI, NOT the trade-by-trade tape — so you can't see sweep vs block or at-ask (aggressive buy) vs at-bid (sell) directly. Infer direction from the call/put skew, strike location, and the underlying's price action. There's also no historical average option volume, so use the **volume/OI ratio** as the "unusual" measure (it needs no historical baseline). This is a genuine flow proxy — directional tilt + fresh-positioning detection — not full sweep-flow; that granularity would need a paid feed (deferred until the account is much larger).
 
 ---
 
@@ -551,8 +574,8 @@ Once cost basis is recovered, the remaining contracts are pure profit. There is 
 
 The setup-quality tiers describe conviction. But because options are leveraged, **any single OPTIONS position is capped at ~40% of buying power regardless of tier** — defined risk still means a single position can lose its whole premium, and you never want one option to be able to take a catastrophic chunk. The bigger tier percentages apply to EQUITY positions (no leverage) or to total directional commitment, not to one option.
 
-- **A+ setup** (clean TA + fresh hard catalyst + leading sector + strong regime): equity up to 60–80% of BP; **single option capped at ~40% of BP** (if you want more A+ exposure, you've maxed the single-option cap — that's intentional).
-- **A setup** (clean TA + at least 1 of: catalyst, sector tailwind): equity 40–60%; single option ~25–40%.
+- **A+ setup** (clean TA + strong regime + at least TWO of: fresh hard catalyst, **aligned options flow (3c+)**, leading sector): equity up to 60–80% of BP; **single option capped at ~40% of BP** (if you want more A+ exposure, you've maxed the single-option cap — that's intentional). Clean TA + aligned options flow is the signature A+ "everything lines up" trade.
+- **A setup** (clean TA + at least ONE of: catalyst, aligned options flow, sector tailwind): equity 40–60%; single option ~25–40%.
 - **B setup** (clean TA + favorable sentiment for the trade's direction, no other confirmation): 20–40% equity / ~20–25% option.
 - **Clean TA alone, no confirmations**: 15–25% — modest size, prove it before adding.
 - **Below clean TA**: don't trade — wait for the next setup.
