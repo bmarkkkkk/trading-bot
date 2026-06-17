@@ -156,9 +156,42 @@ You are the trader. No one else's positioning, no one's tweet, no one's fund mat
 
 ---
 
-**3a. Cast a wide net — technical screeners (PRIMARY) — SCAN BOTH DIRECTIONS**
+**3a. Cast a wide net — SCAN BOTH DIRECTIONS**
 
-Run these queries in **parallel** to build a universe of 30+ candidates. Hunt BULLISH (call buys / equity longs) AND BEARISH (put buys) setups simultaneously — both are fully tradeable now. **A great bearish setup is just as valuable as a great bullish one** — and during corrections or sector breakdowns, the bearish side is where the easy money is.
+Build a universe of 30+ candidates. Hunt BULLISH (call buys / equity longs) AND BEARISH (put buys) setups simultaneously — both are fully tradeable now. **A great bearish setup is just as valuable as a great bullish one** — and during corrections or sector breakdowns, the bearish side is where the easy money is.
+
+---
+
+**3a.0 — STRUCTURED DISCOVERY (PRIMARY universe source — use this FIRST, every run)**
+
+Robinhood's structured data is far better than WebSearch for finding plays — it's real, current, and broad (WebSearch returns editorial "stocks to buy" fluff that keeps defaulting to the same mega-caps). Build the universe from these FIRST:
+
+1. **get_popular_watchlists** then **get_watchlist_items** on these list_ids to pull real symbols:
+   - **Daily movers** (`eddbebe5-34cc-4df1-953c-d3e3cb55bc19`) — the day's actual biggest movers across the whole market. PRIMARY hunting ground for both breakouts (up movers) and breakdowns (down movers).
+   - **Upcoming earnings** (`a18cdf8c-46c3-4585-be8f-d2cd57ec8bb1`) — names with imminent earnings = catalyst plays AND a heads-up for the earnings gate.
+   - **100 most popular** (`e8ef4c1f-244f-4db5-a582-c4c37f3c8e8e`) — highly liquid, options-friendly names; good for clean setups with tight option spreads.
+   - **Rotate through 1–2 SECTOR lists each run** to hunt beyond mega-cap tech (the bot over-defaults to semis). Energy (`1bb3fceb...`), Healthcare (`917fdacd...`), Finance (`4babfae9...`), Software (`79254266...`), Pharma (`39849561...`), Sector ETFs (`196033c3...`). Pick sectors that the regime/rotation check (3d) says are leading or breaking down.
+
+2. **Quant-rank the pooled symbols with get_equity_fundamentals** (batch up to 10 per call). For each, compute the REAL metrics — no guessing:
+   - **Relative volume = today's `volume` ÷ `average_volume_2_weeks`.** >1.5 = institutional footprint, the single best "something is happening here" signal. Rank by this.
+   - **Distance from 52-week high/low** — near 52w high on volume = breakout candidate; near 52w low on volume = breakdown candidate.
+   - **Float** — small float (<50M) + high rel-volume = explosive potential (and squeeze risk on puts). **Market cap** — use to keep the net diversified across sizes, not just mega-caps.
+   - **Liquidity gate:** drop anything with `average_volume` <1M shares or that's a thin ADR — it won't have tradeable options or clean fills.
+
+3. **Keep only names with liquid, tradeable options** (since options are now the primary vehicle). A quick get_option_chains check confirms a real chain exists; the per-contract liquidity filters (OI/volume/spread) get applied later at execution.
+
+This gives you a broad, real, quant-ranked universe across the whole market every run.
+
+---
+
+**3a.1 — NEWS CATALYST SUPPLEMENT (WebSearch — for what it's actually good at)**
+
+Use WebSearch NOT as the primary screener but to catch real-time news the structured lists miss, and to confirm catalysts on your top-ranked names:
+- `stock market movers today [date] unusual volume news` — catch any breaking catalyst names not yet in the lists
+- `biggest stock gainers losers today [date]` — cross-check the Daily movers list
+- Then the per-candidate catalyst checks in Step 3c
+
+**Optional supplemental WebSearch angles** (only if the structured universe is thin or you want more breadth — these are secondary now, not the primary net):
 
 ### BULLISH SCREENERS (for equity longs / call buys)
 
@@ -278,6 +311,8 @@ When reading Finviz output, the SMA20/50/200 fields show the **percentage relati
 - **Full bullish stack** (price > 20 > 50 > 200) = Stage 2 uptrend → LONG candidate
 - **Full bearish stack** (price < 20 < 50 < 200) = Stage 4 downtrend → PUT candidate
 - Mixed positioning (e.g., price > 200 but < 20) = consolidation / transition → WATCH, no trade
+
+**Authoritative OHLCV via get_equity_historicals (use on your final 1–3 candidates):** For the names you're about to trade, pull real price bars with get_equity_historicals (e.g. interval=day over the last 3–6 months, plus interval=30minute over the last few days for intraday structure). This gives you the ACTUAL chart — compute the real MA positions, the recent swing high/low (for stop placement), and ATR (average true range) to size a volatility-appropriate stop instead of a fixed %. This is the ground truth; Finviz prose has misled before. Use ATR to set stops: ~1.5–2× ATR below entry for equity, and place the option catastrophic stop with that move in mind.
 
 ---
 
