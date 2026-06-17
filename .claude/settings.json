@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "acceptEdits",
     "allow": [
       "mcp__a0a71e8b-c1b2-43d2-8458-a0ebdb5a373f__get_portfolio",
       "mcp__a0a71e8b-c1b2-43d2-8458-a0ebdb5a373f__get_accounts",
