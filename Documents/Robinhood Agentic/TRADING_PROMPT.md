@@ -111,6 +111,7 @@ Constraint: single-leg only. No spreads, condors, or multi-leg structures via MC
 - For equity holdings: call get_equity_quotes on each
 - For option holdings: call get_option_quotes (using each position's option_id) — this returns mark_price, implied_volatility, delta, theta, and all Greeks. Note current premium vs your journaled entry, plus expiration_date + days-to-expiration (DTE)
 - Note buying_power — this is your ammunition
+- **CONCURRENT-RUN GUARD (prevents two overlapping runs double-spending the same buying power):** the main 30-min task and the open/close bursts can fire within minutes of each other (jitter makes overlap possible). Pull recent orders — get_equity_orders AND get_option_orders, placed_agent='agentic', created in the last ~10 minutes. **If a NEW-position (buy/open) order was placed that recently, assume another scheduled run is mid-cycle and may have already committed buying power not yet reflected in the numbers → do NOT open a new position this run. Manage existing positions only** (closing, trimming, stop-adjusting are fine; opening is not). Also re-check live buying_power immediately before any new order and never exceed it. This is the only guard against two near-simultaneous runs both spending the same cash.
 
 ### Step 2: Evaluate Each Position (skip if no positions)
 For each holding, assess:
@@ -525,7 +526,7 @@ For OPTIONS trades (calls for bullish, puts for bearish):
    - Optionally sanity-check `chance_of_profit_long` — it's a useful probability read, not a decision-maker
 4. review_option_order (leg: option_id, side=buy, position_effect=open) → check fees/alerts
 5. place_option_order with fresh ref_id UUID, limit at mid-price
-6. **Record the entry in trade_journal.md:** ticker, contract, entry premium, delta, IV, stop, targets, thesis, setup grade
+6. **CONFIRM THE FILL before doing anything else.** place_*_order usually returns 'unconfirmed'/'queued', NOT filled. Poll get_option_orders (by order_id) or get_option_positions until the position shows filled/open. Only after the fill confirms: (a) **record the entry in trade_journal.md** (ticker, contract, entry premium, delta, IV, stop, targets, thesis, setup grade), then (b) place the protective stop (Step 4a). Never journal or stop an unfilled order — a sell-to-close stop against a position that isn't open yet will reject and leave you exposed.
 
 For EQUITY trades (long only — cash account cannot short):
 1. Call review_equity_order first to verify the order
@@ -535,7 +536,7 @@ For EQUITY trades (long only — cash account cannot short):
 
 **This is the core of the risk model: be aggressive on entries, but cap every trade's loss with an automatic broker-side stop that does NOT depend on a scheduled run firing.** The scheduler is unreliable and the app may be closed — a "cut it next run" stop protects nothing if the run is skipped. A resting stop order at Robinhood is enforced 24/5 regardless. This is what lets you size up with confidence.
 
-**The instant any entry fills, place a matching protective stop:**
+**Once the entry is CONFIRMED FILLED (per Step 4 step 6 — do NOT place a stop against an unfilled/queued order, it will reject), place a matching protective stop:**
 
 For EQUITY long positions:
 - place_equity_order, side=sell, type=stop_limit, time_in_force=gtc
@@ -552,6 +553,8 @@ For OPTION long positions (calls or puts):
 **If the protective stop is REJECTED, never leave the position naked.** Common cause: a sell stop_price must be below the current bid/price — if the underlying already moved, adjust the stop to a valid level and retry. If it still won't place after a retry, flag it loudly in the journal (`NO PROTECTIVE STOP — manage manually`) and treat that position as requiring a hard look every single run until a stop is on or it's closed. A position without a working stop is the one situation the whole risk model is built to avoid.
 
 **When you close or adjust a position manually on a later run: CANCEL the resting protective stop first** (cancel_equity_order / cancel_option_order), then place the new order — otherwise you risk a double-exit.
+
+**Trailing race — minimize the unprotected window:** trailing = cancel the old stop, then place the new (higher) stop. Between those two calls the position is briefly UNPROTECTED. Do them back-to-back, and **CONFIRM the new stop is live** (get_option_orders / get_equity_orders) before moving on. If the replacement fails, you're naked — retry immediately, or flag `NO PROTECTIVE STOP` per the rejection rule above. Never cancel a stop unless you're placing the replacement in the same step.
 
 ### Step 4b: CAPTURE THE FULL RUNNER — let winners run, don't choke them
 
