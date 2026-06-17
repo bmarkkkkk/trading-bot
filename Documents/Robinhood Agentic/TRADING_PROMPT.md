@@ -85,7 +85,12 @@ If only equity tools are available → execute equity trades and log options set
 
 ### Step 0: Load State & Memory
 
-Read `logs/state.md` from this repository. This is your memory from the previous run.
+Determine the log directory (same logic as Step 6):
+```
+REPO=$(git rev-parse --show-toplevel 2>/dev/null)
+LOG_DIR="${REPO:-$HOME/trading-bot-logs}/logs"
+```
+Then read `{LOG_DIR}/state.md`. This is your memory from the previous run.
 
 Extract and internalize:
 - **Market context** — yesterday's SPY/VIX/sector assessment as your baseline before fresh data
@@ -359,9 +364,24 @@ State:
 
 ### Step 6: Save State & Memory
 
+**First — determine where to write logs:**
+```
+REPO=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -n "$REPO" ]; then
+  LOG_DIR="$REPO/logs"
+else
+  LOG_DIR="$HOME/trading-bot-logs"
+fi
+mkdir -p "$LOG_DIR"
+echo "$LOG_DIR"
+```
+Run that Bash command. Use the output path as `LOG_DIR` for all file writes below.
+- If inside a git repo (cloud sessions): logs go in `{repo}/logs/` and get committed
+- If outside a git repo (local Mac scheduled tasks): logs go in `~/trading-bot-logs/` — safely outside `~/.claude/`
+
 At the end of every run, do all three of the following:
 
-**A. Overwrite `logs/state.md` completely:**
+**A. Overwrite `{LOG_DIR}/state.md` completely:**
 
 ```
 # Trading Bot State — Last Updated: [TIME ET] [DATE]
@@ -398,7 +418,7 @@ At the end of every run, do all three of the following:
 [DATE TIME]: [What worked, what failed, pattern noticed, mistake to avoid, market behavior observed]
 ```
 
-**B. Append a new entry to `logs/trade-journal.md`:**
+**B. Append a new entry to `{LOG_DIR}/trade-journal.md`:**
 
 ```
 ---
@@ -419,13 +439,13 @@ At the end of every run, do all three of the following:
 ---
 ```
 
-**C. Update `logs/performance.md`** — overwrite the summary stats section, keep session history intact. Append new session row to "Session History."
+**C. Update `{LOG_DIR}/performance.md`** — overwrite the summary stats section, keep session history intact. Append new session row to "Session History."
 
-**D. Commit and push the logs:**
+**D. Commit and push (only if LOG_DIR is inside a git repo):**
 ```
-git add logs/ && git commit -m "Run [DATE] [TIME] — [one-line summary, e.g. 'Sold XLF puts +82%, entered NVDA calls B setup']" && git push origin HEAD
+git -C "$REPO" add logs/ && git -C "$REPO" commit -m "Run [DATE] [TIME] — [one-line summary]" && git -C "$REPO" push origin HEAD
 ```
-This preserves your memory across cloud sessions. If git push fails (network), still write the files — the data is not lost within the current session.
+If LOG_DIR is `~/trading-bot-logs/` (local Mac), skip the git commands — files are saved locally and persist between runs.
 
 ---
 
