@@ -21,4 +21,4 @@ This is a BURST run — 10-minute cadence instead of 30. You're firing in the mo
 - **Hard rules are unchanged** — MA stack verification, no chasing +5% parabolic candles, no insider-distribution names. The window is fast but the rules don't change.
 - **Limit new entries to highest-conviction setups** (A or A+ only) — the open is noisy; a mediocre entry here gets stopped out in the chop.
 
-After completing, log decisions with timestamps per Step 5 and save state per Step 6.
+After completing, log decisions with timestamps per Step 5. **Skip Step 6 entirely** — do not write to log files or run git commands. The main 30-minute run handles all state saving.
