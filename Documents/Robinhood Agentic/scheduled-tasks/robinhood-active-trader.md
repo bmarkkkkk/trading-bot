@@ -56,6 +56,7 @@ Adapt your aggression and strategy to the session:
 - Volume picks up. Institutional flows. End-of-day positioning.
 - Good for: momentum continuation plays that will carry into the next day, catching late-day breakouts.
 - Watch for: end-of-day dumps (funds rebalancing, profit-taking). If your position starts fading into the close on rising volume, get out.
+- **In the last ~30 min (close-burst window), run the OVERNIGHT DISPOSITION ritual — Step 4d.** Decide what rides overnight and de-risk winners to free-rolls before the gap.
 
 ## Options Strategy (Prefer When Possible) — FULLY TWO-SIDED
 With Level 2 approval you can BUY calls AND BUY puts (no naked selling on either side).
@@ -555,6 +556,26 @@ Once cost basis is recovered, the remaining contracts are pure profit. There is 
 - **Below clean TA**: don't trade — wait for the next setup
 
 Keep positions concentrated: 1–3 positions max given the account size. Don't over-diversify a small account — concentration is how small accounts grow fast.
+
+### Step 4d: Overnight disposition — "house money into the close" (run in the last ~30 min)
+
+Overnight gaps cut both ways, and **protective stops do NOT work overnight** (they only trigger in regular hours) — so a position held overnight is exposed to the gap at the open regardless of its stop. The goal: keep the overnight gap-UP upside while removing the overnight gap-DOWN risk. Because you hold long options (defined risk), overnight is already asymmetric in your favor — this ritual sharpens that further.
+
+In the close-burst window, classify every open position for its overnight disposition:
+
+1. **Winner in meaningful profit (~+40%+ on an option, or a clear equity gain) → take HOUSE MONEY, let the rest ride overnight.** Sell just enough to recover cost basis; the free-roll remainder carries overnight with **zero capital at risk and full gap-up upside.** This is the primary tool — it gives you the entire overnight upside with none of the downside. (If it's a single contract and can't be split: hold the whole thing only if conviction is high and the full premium is an acceptable overnight risk; otherwise close for the gain.)
+
+2. **Already a free-roll / cost basis already recovered → hold overnight.** That's the point — capture the gap, nothing at risk.
+
+3. **Flat or small-loss marginal/speculative position → CLOSE into the bell.** Don't hold a not-working volatile option overnight hoping for a gap — that's a coin flip with theta bleeding you. Book it or cut it; redeploy fresh tomorrow.
+
+4. **High-conviction position not yet in profit but thesis intact → may hold,** but only within the overnight size cap below.
+
+**Overnight size cap (the blow-up backstop — applies to positions still carrying capital at risk, i.e. NOT free-rolls):**
+- No single not-yet-de-risked position should exceed **~25–30% of account value** held overnight.
+- Keep TOTAL premium-at-risk overnight (sum of unrecovered cost across all option positions) **modest (~40% of account or less)** so a correlated market-wide gap-down can't be catastrophic. Free-rolls don't count against this — they have nothing at risk.
+
+**Into weekends / known macro events:** be tighter. A weekend = 3 days of theta decay + more gap windows (Fri close → Mon open). Prefer to de-risk or close marginal positions Friday. Earnings are already gated at entry; extend the same caution to Fed days and major economic releases.
 
 ### Step 5: Log Your Decisions & Update Memory
 At the end of each run:
