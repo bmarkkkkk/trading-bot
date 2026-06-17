@@ -285,6 +285,8 @@ Pull every ticker mentioned across all queries. Note the setup type for each (br
 
 **Technical setups to hunt for — BULLISH (for equity longs / call buys):**
 
+*(This is the reference catalog. Discovery in 3a finds candidates; you actually IDENTIFY which of these patterns is present when you read the raw candles in Step 3b, point 6. A name only becomes a TRADE if the candles show one of these patterns.)*
+
 **IMPORTANT: being near a 52-week high is ONE valid setup, NOT a requirement. Most high-R/R bullish entries happen BELOW the highs — in bases, pullbacks, and reversals. Hunt all three zones below; do not over-weight Zone A.**
 
 **Zone A — Momentum / near highs** (the minority of good setups):
@@ -373,7 +375,7 @@ For the top 8–10 names, pull the **raw candles from Robinhood** — `get_equit
 3. **RSI(14)** from closes — 50–70 rising = healthy; >70 = extended; <30 = oversold. Watch divergence (price new high but RSI lower = weakening, and vice versa).
 4. **Volume / price relationship** — per bar: volume rising on UP-bars = accumulation (bullish); rising on DOWN-bars = distribution (bearish). A breakout on weak volume is suspect. Compute relative volume (recent vs average) — this is the institutional footprint, straight off the candles.
 5. **Candlestick patterns at key levels** — read the actual recent candles: bullish/bearish engulfing, hammer / shooting-star, doji (indecision), inside/outside bars, wide-range conviction candles. A hammer at support or a bullish engulfing off a higher-low is a real call trigger; a shooting-star / bearish engulfing at resistance is a put trigger.
-6. **Chart patterns from the bars** — detect from the structure: base breakout (tight range → break on volume), bull/bear flag (sharp move → tight counter-pullback → resume), higher-low pullback to the 20/50 EMA, double top/bottom, head-and-shoulders (via the swing sequence), failed breakout (pokes past a level then rejects — a trap).
+6. **Chart-pattern identification — THE HEART OF THE CANDLE READ.** Match the bars against the full setup catalog defined earlier in this Step (the BULLISH Zone A/B/C patterns AND the BEARISH patterns). Work through it: is there a breakout, bull flag, higher-low pullback to the 20/50 EMA, ascending triangle, volatility contraction, base breakout, double bottom, inverse head-and-shoulders, cup-and-handle, falling-wedge breakout, rounding bottom, downtrend-line break + 50 EMA reclaim, or oversold mean-reversion bounce? (Bearish: breakdown, bear flag, lower-high rejection, double top, H&S, failed breakout.) **Name the SPECIFIC pattern the candles show** (e.g. "cup-and-handle, handle forming on light volume" or "inverse H&S, neckline break on 1.6× volume") and which zone it's in. If no recognizable pattern is forming, that's a PASS — don't invent one to justify a trade.
 7. **Support / resistance** — concrete prices from actual swing highs/lows and the highest-volume bars (where the most shares changed hands). These are your entry, stop, and target levels.
 8. **ATR(14)** from the bars — volatility for stop sizing (~1.5–2× ATR; see Step 4a).
 
