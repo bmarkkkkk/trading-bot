@@ -173,7 +173,7 @@ Robinhood's structured data is far better than WebSearch for finding plays — i
    - **Rotate through 1–2 SECTOR lists each run** to hunt beyond mega-cap tech (the bot over-defaults to semis). Energy (`1bb3fceb...`), Healthcare (`917fdacd...`), Finance (`4babfae9...`), Software (`79254266...`), Pharma (`39849561...`), Sector ETFs (`196033c3...`). Pick sectors that the regime/rotation check (3d) says are leading or breaking down.
 
 2. **Quant-rank the pooled symbols with get_equity_fundamentals** (batch up to 10 per call). For each, compute the REAL metrics — no guessing:
-   - **Relative volume = today's `volume` ÷ `average_volume_2_weeks`.** >1.5 = institutional footprint, the single best "something is happening here" signal. Rank by this.
+   - **Relative volume = today's `volume` ÷ `average_volume_2_weeks`.** >1.5 = institutional footprint, the single best "something is happening here" signal. But read it TOGETHER with how far price has moved today (see "catch the move, don't chase it" below): **high rel-volume + SMALL price move so far = early accumulation, the best entries** (you're getting in as it begins). High rel-volume + already a big move = you're late.
    - **Distance from 52-week high/low** — near 52w high on volume = breakout candidate; near 52w low on volume = breakdown candidate.
    - **Float** — small float (<50M) + high rel-volume = explosive potential (and squeeze risk on puts). **Market cap** — use to keep the net diversified across sizes, not just mega-caps.
    - **Liquidity gate:** drop anything with `average_volume` <1M shares or that's a thin ADR — it won't have tradeable options or clean fills.
@@ -190,6 +190,26 @@ Use WebSearch NOT as the primary screener but to catch real-time news the struct
 - `stock market movers today [date] unusual volume news` — catch any breaking catalyst names not yet in the lists
 - `biggest stock gainers losers today [date]` — cross-check the Daily movers list
 - Then the per-candidate catalyst checks in Step 3c
+
+---
+
+**3a.2 — CATCH THE MOVE, DON'T CHASE IT (critical — mover lists are lagging)**
+
+Mover/most-popular lists show what ALREADY moved. They're a starting universe, NOT buy signals. Buying whatever is up the most = buying the top from the people who caught the real move. For EVERY candidate, classify where it is in its move and act accordingly:
+
+- **EARLY (best — this is "catching" the move):** fresh breakout from a multi-week base, OR first clean push off support, with rising relative volume but price NOT yet extended (small-to-moderate move so far today, still near the breakout level not far above it). You're getting in as the move begins. **Trade these aggressively.**
+- **CONTINUATION (also good — entering the next leg):** name moved earlier (yesterday / earlier today), then PULLED BACK to a higher-low / 20-MA / VWAP and is resuming. The bull-flag and pullback patterns are exactly this — you're buying the second leg at a defined-risk entry, not chasing the first. **Trade these.**
+- **EXTENDED / EXHAUSTED (you missed it — SKIP):** already up big (the parabolic candle, multiple green days far above the base, RSI stretched). The move happened without you. Do NOT chase. Put it on watch for the eventual pullback (which becomes a CONTINUATION entry) instead of buying the top.
+
+**The discipline:** when a name pops up on Daily movers, the question is never "it's moving, buy it" — it's "is this the START of a move I can ride, a PULLBACK I can enter, or a move that already happened?" Only the first two are trades.
+
+**Anticipatory sources — find names BEFORE they hit the movers list:**
+- **Upcoming earnings list** — position ahead of the catalyst (respecting the earnings/IV-crush gate — only if the setup and IV justify it).
+- **Sector rotation laggards:** when a sector is leading (3d), the strongest name has often already run — look for the #2/#3 name in that sector still basing, about to catch up. You get the move before the crowd rotates to it.
+- **Coiling/consolidation near highs:** names tightening in a narrow range just under a breakout level on declining volume = a spring about to release. These are pre-move and won't be on a movers list yet. Use get_equity_historicals to spot the tightening range.
+- **Rising relative volume with a flat price** (from fundamentals): accumulation before the breakout — smart money building a position before it moves. The earliest signal there is.
+
+---
 
 **Optional supplemental WebSearch angles** (only if the structured universe is thin or you want more breadth — these are secondary now, not the primary net):
 
