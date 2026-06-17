@@ -471,6 +471,27 @@ On each run, for a position moving in your favor:
 
 A winner round-tripping all the way to a loss is a failure; a winner you let run — banking cost basis and riding the rest wide — is the system working exactly as designed. **Bias hard toward letting it run.**
 
+### Step 4c: Exiting the free runner — complete exit ladder (after house money)
+
+Once cost basis is recovered, the remaining contracts are pure profit. There is NO scenario where this position becomes a loss of your capital — so manage it for maximum gain. On each run, evaluate the free runner against this ladder (first matching case wins):
+
+1. **PARABOLIC / blow-off top → sell into strength, don't trail.** If it spikes vertically (huge % gain in 1–2 runs, climax volume, RSI extreme >80 / <20 for puts), TAKE PROFIT aggressively into the spike. A parabola gives back 50%+ on the snap-back — trailing is the wrong tool here. Sell into the euphoria.
+
+2. **THESIS BROKEN / trend rollover → close the remainder.** If the underlying loses its trend structure (breaks the most recent higher-low for a call / lower-high for a put, loses a key MA, momentum clearly rolls over), the move is done — close it and book the profit.
+
+3. **MILESTONE scaling → peel off chunks on big extensions.** At large further extensions (~+150–200%, then ~+300%), sell another small portion to bank profit chunks while keeping a core lottery position running. Banks gains on the way up without a full exit.
+
+4. **STILL RUNNING cleanly → hold with a wide trail.** Trend intact, momentum strong, not parabolic → keep riding. Trail wide (give it max room — it's free money) below the prior swing low. Let it run.
+
+5. **STALLED / dead money → close it.** If the free runner goes sideways for ~3+ runs and theta is bleeding it with no momentum, close it. A decaying asset going nowhere is a slow loss of profit — redeploy.
+
+**Expiration handling (applies to the whole position, free or not):**
+- **Never let a long option ride into expiration / auto-exercise.** A cash account can't afford to take delivery of 100 shares of an expensive name (e.g. a $200 stock = $20k assignment). ALWAYS close the contract to capture remaining premium before expiry.
+- **~7 DTE and still running** → ROLL: close this contract, open a further-dated one (2–6 weeks) to keep the move paying past the theta cliff.
+- **~7 DTE and stalled/flat** → just close it. Don't roll a thesis that isn't working.
+
+**Operational note — keep the protective stop in sync:** whenever you sell PART of a position (house money or milestone trim), the resting GTC protective stop was sized for the old quantity. **Cancel it and replace it with a new stop for the remaining quantity** (raised toward breakeven/profit-lock as appropriate). Never leave a stale stop whose quantity exceeds your holdings — it will fail or misfire. Update the order_id in the journal.
+
 **Sizing by setup quality:**
 - **A+ setup** (clean TA + fresh hard catalyst + leading sector + strong market environment): deploy 60–80% of buying power. This is the rare "all systems go" setup — size aggressively.
 - **A setup** (clean TA + at least 1 of: catalyst, leading sector tailwind): deploy 40–60%
