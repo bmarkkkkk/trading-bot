@@ -26,4 +26,4 @@ This is a BURST run — 10-minute cadence instead of 30. You're in the last 30 m
 - Position is flat or slightly down → close it. Don't give the overnight gap a chance to turn a flat into a loss.
 - Position is a winner showing signs of fading volume into close → take full profit now. Don't let a winner become a loser overnight.
 
-After completing, log decisions with timestamps per Step 5. **Skip Step 6 entirely** — do not write to log files or run git commands. The main 30-minute run handles all state saving.
+After completing, execute Step 5 (log decisions with timestamps) and Step 6 (save state, append to journal, update performance, git push). The state.md written at close-burst is especially important — it becomes the memory for tomorrow's first run.
