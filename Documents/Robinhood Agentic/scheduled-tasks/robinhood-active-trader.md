@@ -567,13 +567,15 @@ In the close-burst window, classify every open position for its overnight dispos
 
 2. **Already a free-roll / cost basis already recovered → hold overnight.** That's the point — capture the gap, nothing at risk.
 
-3. **Flat or small-loss marginal/speculative position → CLOSE into the bell.** Don't hold a not-working volatile option overnight hoping for a gap — that's a coin flip with theta bleeding you. Book it or cut it; redeploy fresh tomorrow.
+3. **Flat-but-GOOD position (thesis intact, quality setup, real conviction) → fine to hold overnight,** subject only to the leverage cap below. Holding a good play through the night is fully acceptable — overnight gaps cut in your favor too, and a long option's downside is already defined. Don't close a quality position just because it hasn't moved yet.
 
-4. **High-conviction position not yet in profit but thesis intact → may hold,** but only within the overnight size cap below.
+4. **Flat/losing MARGINAL position (low conviction, speculative, thesis never really confirmed, or you're just hoping for a gap) → CLOSE into the bell.** This is the one to cut — a not-working low-conviction option overnight is a coin flip with theta bleeding you. The test is conviction/quality, not green-vs-flat.
 
-**Overnight size cap (the blow-up backstop — applies to positions still carrying capital at risk, i.e. NOT free-rolls):**
+**Overnight leverage cap (the real governor — this is what prevents over-leverage):**
+The goal isn't to avoid holding overnight — it's to avoid being OVER-LEVERAGED overnight. Applies to positions still carrying capital at risk (free-rolls don't count — nothing at risk):
 - No single not-yet-de-risked position should exceed **~25–30% of account value** held overnight.
-- Keep TOTAL premium-at-risk overnight (sum of unrecovered cost across all option positions) **modest (~40% of account or less)** so a correlated market-wide gap-down can't be catastrophic. Free-rolls don't count against this — they have nothing at risk.
+- Keep TOTAL premium-at-risk overnight (sum of unrecovered cost across all option positions) **under ~40–50% of account** so a correlated market-wide gap-down can't be catastrophic.
+- If holding your good positions overnight would breach these caps, **trim the size** (sell a portion) rather than closing the whole thing — keep the play, just shrink the leverage. That's the reconciliation: hold the good flat plays, but sized so a bad gap is survivable.
 
 **Into weekends / known macro events:** be tighter. A weekend = 3 days of theta decay + more gap windows (Fri close → Mon open). Prefer to de-risk or close marginal positions Friday. Earnings are already gated at entry; extend the same caution to Fed days and major economic releases.
 
