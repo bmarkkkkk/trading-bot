@@ -10,8 +10,9 @@ This file is the agent's working memory across runs. Each run READS this at the 
 - Entry: <price> | Size: <contracts/shares> | Setup grade: <A+/A/B>
 - Thesis: <one line — why this trade, what setup>
 - Stop: <price/premium> | T1: <price> | T2: <price>
+- **Protective stop order_id: <UUID of the resting broker-side stop — needed to cancel/replace when trailing or closing>**
 - Delta at entry: <x> | IV at entry: <x>
-- Status: <latest note>
+- Status: <latest note — incl. whether stop has been trailed to breakeven yet>
 ```
 
 ---

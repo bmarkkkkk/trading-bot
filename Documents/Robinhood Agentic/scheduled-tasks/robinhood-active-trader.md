@@ -135,6 +135,8 @@ Decision framework — actively manage every position every run:
 - **IV crush watch:** If you're holding through an earnings/event and IV collapses, the premium can drop even when direction is right. Exit event-driven option trades right after the catalyst resolves.
 - To close an option: review_option_order then place_option_order with side=sell, position_effect=close.
 
+**Reconcile against the journal — detect stops that fired between runs:** Compare current positions to trade_journal.md. If a position you had journaled is GONE, its protective stop fired between runs (good — the safety net worked). Look it up via get_equity_orders / get_option_orders, record the result as a closed trade in performance_log.md, and remove it from the journal's open list. This is why the broker-side stop matters: it protects you even on runs that never fired.
+
 **You are an active trader, not a buy-and-hold investor.** Every run you must ask: "Is this still the best use of this capital right now?" If the answer is no, sell and redeploy. Never leave capital sitting in a losing or stalling trade out of hope.
 
 ### Step 3: Scan for New Opportunities — PURE TA + CATALYST METHODOLOGY
@@ -281,7 +283,9 @@ When reading Finviz output, the SMA20/50/200 fields show the **percentage relati
 
 **3b. Deep TA on top candidates (REQUIRED before any trade)**
 
-For the top 5–8 names from your screener universe, WebFetch Finviz **in parallel**: `https://finviz.com/quote.ashx?t=SYMBOL`
+**First, rank the universe so the best names make the cut.** Don't deep-analyze a random 8 — quickly score all 30+ candidates on: (a) magnitude of the move (% from prior close), (b) volume confirmation (relative volume), (c) cleanliness of the setup type, (d) sector alignment with the day's leadership/weakness. Take the **top 8–10 by that composite** into deep TA. A great setup ranked #9 is worth more than a mediocre one ranked #2 — the ranking is what prevents you from missing the winner.
+
+For those top 8–10 names, WebFetch Finviz **in parallel**: `https://finviz.com/quote.ashx?t=SYMBOL`
 
 Read each chart holistically. The single question to answer: **"Is institutional money in control here, and is there clear room to run with a defined risk level?"**
 
@@ -426,6 +430,33 @@ For OPTIONS trades (calls for bullish, puts for bearish):
 For EQUITY trades (long only — cash account cannot short):
 1. Call review_equity_order first to verify the order
 2. Call place_equity_order to execute
+
+### Step 4a: Place a PROTECTIVE STOP immediately after every entry (NON-NEGOTIABLE)
+
+**This is the core of the risk model: be aggressive on entries, but cap every trade's loss with an automatic broker-side stop that does NOT depend on a scheduled run firing.** The scheduler is unreliable and the app may be closed — a "cut it next run" stop protects nothing if the run is skipped. A resting stop order at Robinhood is enforced 24/5 regardless. This is what lets you size up with confidence.
+
+**The instant any entry fills, place a matching protective stop:**
+
+For EQUITY long positions:
+- place_equity_order, side=sell, type=stop_limit, time_in_force=gtc
+- stop_price = your planned stop level; limit_price ~1–2% below stop_price (lets it fill through a normal drop without getting destroyed in a flash spike)
+- Sizing the stop: risk no more than **~7–8% below entry** for a swing equity long, tighter in chop
+
+For OPTION long positions (calls or puts):
+- place_option_order, leg: same option_id, side=sell, position_effect=close, type=stop_market, time_in_force=gtc, stop_price below current bid
+- Use stop_market (guaranteed exit) rather than stop_limit here — options drop fast and a missed fill defeats the purpose; the liquidity filters (OI≥200, tight spread) keep slippage contained
+- Set the stop so max loss on the premium is **~40–50%** of what you paid (matches the -50% cut rule, but now automatic)
+
+**Record the protective stop's order_id in trade_journal.md** alongside the position. You'll need it to cancel/replace when you adjust (trailing) or close manually.
+
+**When you close or adjust a position manually on a later run: CANCEL the resting protective stop first** (cancel_equity_order / cancel_option_order), then place the new order — otherwise you risk a double-exit.
+
+### Step 4b: Trail the stop on winners (lock in gains, kill round-trips)
+
+On each run, for any position that has moved in your favor, RAISE the protective stop (never lower it) by cancel + replace:
+- Once a position is **up ~20%+**, move the stop to **breakeven** — the trade can no longer become a loser
+- As it runs further, trail the stop below the most recent higher-low (equity) or to lock ~50% of peak premium gain (options)
+- This converts winners into "free rolls" and is how you let upside run without giving it all back. A winner that round-trips to a loss is a process failure the trailing stop prevents.
 
 **Sizing by setup quality:**
 - **A+ setup** (clean TA + fresh hard catalyst + leading sector + strong market environment): deploy 60–80% of buying power. This is the rare "all systems go" setup — size aggressively.
