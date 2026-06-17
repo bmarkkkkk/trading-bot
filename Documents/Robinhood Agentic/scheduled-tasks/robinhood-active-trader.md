@@ -72,7 +72,7 @@ When to favor options over stock (applies to BOTH calls AND puts):
 
 Options sizing rules (symmetric for calls and puts):
 - Never risk more than 30–40% of buying power on a single options position
-- Select strikes by DELTA (0.55–0.70 — ATM to slightly ITM; see Step 4 for detail), with 2–6 weeks to expiration (enough time, not too much decay). This delta band beats a fixed "near/slightly-OTM" rule — enough directional punch without far-OTM decay.
+- Select strikes by DELTA (**0.40–0.55 — ATM to slightly OTM**; see Step 4 for detail), leaning **4–6 weeks** to expiration to respect theta on the OTM side. This band adds convexity/upside vs deep-ITM while keeping enough delta to actually move and survive normal noise. Avoid far-OTM lottery tickets (<0.30) as a default — they bleed theta fast and trip the catastrophic stop on normal swings.
 - **Buy CALLS for bullish plays** — directional bet up
 - **Buy PUTS for bearish plays** — directional bet down (NOT just hedges; these are full conviction directional trades)
 - **Profit-taking and loss-cutting are governed by the runner-capture system (Steps 4a–4c), NOT a flat take-profit number.** Do not blanket-exit at +50%. The model is: wide catastrophic stop (~55–65%) as the hard floor, hold winners, take house money at ~+80–100% to create a free roll, then let the runner run per the Step 4c ladder. Cuts are thesis-based, not P&L-based (except the catastrophic floor). This is what captures the big runners instead of leaking tiny gains.
@@ -472,10 +472,10 @@ For OPTIONS trades (calls for bullish, puts for bearish):
 - **If earnings fall before your option's expiration AND you are NOT intentionally playing the event → either pick an expiration that clears earnings, or skip.** Holding a long option through earnings = IV-crush roulette; you can be right on direction and still lose. This is the single most common options blunder — the gate is mandatory.
 
 **Workflow:**
-1. get_option_chains (underlying_symbol) → expirations. Choose one **2–6 weeks out** that clears any earnings date.
+1. get_option_chains (underlying_symbol) → expirations. Choose one **4–6 weeks out** (longer-dated to respect theta on the slightly-OTM strikes) that clears any earnings date.
 2. get_option_instruments (filter expiration + type) → list candidate strikes with their option_ids
 3. get_option_quotes on the candidate strikes → now use the RICH data this returns:
-   - **Delta-based strike selection (preferred over "near/slightly OTM"):** target **delta 0.55–0.70** for directional conviction. That range gives strong directional exposure (moves ~$0.55–0.70 per $1 of underlying) while costing less than deep-ITM and decaying slower than far-OTM. For CALLS that's slightly ITM-to-ATM; for PUTS the equivalent (delta -0.55 to -0.70). Avoid <0.40 delta (lottery-ticket decay) and >0.80 (too expensive, low leverage).
+   - **Delta-based strike selection:** target **delta 0.40–0.55 (ATM to slightly OTM)** for a balance of convexity and survivability. This band gives strong upside leverage (a slightly-OTM contract can run +200%+ on a clean move) while keeping enough delta (~0.40–0.55 move per $1) to actually track the underlying and survive normal noise without the catastrophic stop firing. For CALLS that's ATM-to-slightly-above spot; for PUTS the equivalent (delta -0.40 to -0.55). **Avoid far-OTM <0.30 as a default** (lottery-ticket theta bleed, low hit rate, trips the stop on noise) and >0.70 (too expensive, low convexity). To respect theta on the OTM lean, prefer **4–6 weeks** to expiration.
    - **IV gate (now measurable):** read `implied_volatility`. If IV is elevated relative to the underlying's norm (rough rule: IV >0.50 on a large-cap, or clearly spiked vs a calmer comparable), the option is expensive — either size down, prefer equity, or wait for IV to settle. Cheap IV (like the XLF position at 0.15) = better risk/reward.
    - **Liquidity filters:** OI ≥200, volume ≥50, bid/ask spread ≤25% of mid AND ≤$1.00 absolute
    - Optionally sanity-check `chance_of_profit_long` — it's a useful probability read, not a decision-maker
