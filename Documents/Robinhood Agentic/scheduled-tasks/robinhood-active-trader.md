@@ -147,13 +147,28 @@ Decision framework — actively manage every position every run:
 By the time a catalyst hits mainstream news, it's largely priced in. The chart shows you what institutional money is doing **before** the headline drops. Volume, structure, and relative strength are leading indicators — news is a lagging one. Your edge is reading the tape — not following pundits, fund managers, or Twitter accounts.
 
 **The flow:**
-1. **Cast a wide net** with technical screeners to build a deep universe (30+ candidates)
-2. **Apply deep TA** to filter to the cleanest 3–5 setups
-3. **Confirm with hard catalyst data** (events, not commentary)
-4. **Verify market environment** (sector rotation, breadth)
-5. **Decide and execute**
+0. **Read the market environment & regime FIRST (Step 3.0)** — it sets your aggression, direction bias, and which sectors to hunt for the whole run
+1. **Cast a wide net** to build a deep universe (30+ candidates), biased by the regime
+2. **Apply deep TA on the candles** to filter to the cleanest setups (name the pattern)
+3. **Confirm** with hard catalyst (3c) + options flow (3c+)
+4. **Decide and execute**
 
 You are the trader. No one else's positioning, no one's tweet, no one's fund matters. The chart is the only authority. If your TA work surfaces a great setup that no one is talking about, that's an EDGE — trade it harder.
+
+---
+
+**3.0 — Market environment & regime FIRST (do this BEFORE discovery — it biases everything below). From Robinhood data:**
+- **SPY trend:** get_equity_quotes + get_equity_historicals on SPY — above/below its 20/50 EMA, trending or correcting?
+- **VIX:** get_index_quotes for VIX if available, else WebSearch `VIX today`. <18 risk-on, 18–25 neutral, >25 risk-off.
+- **Sector leadership:** get_equity_quotes on sector ETFs (XLK, XLE, XLF, XLV, XLY) — which lead/lag today? **This tells you which sector lists to mine in 3a.0 and which side to favor** (long the leaders / put the laggards).
+- **Breadth:** infer from how broadly the sector ETFs are green vs red.
+
+**Regime → how to trade the whole run (state the detected regime in your log):**
+- **TRENDING** (SPY higher-highs/lows above rising 20/50 EMA, VIX <18): momentum/breakouts work; trade normally, press winners, pyramid OK.
+- **CHOPPY/RANGE-BOUND** (SPY oscillating, flat MAs, failed breakouts, VIX 15–22): overtrading kills you — **raise the bar to A+ only, cut size, prefer cash.** Most setups are traps (the MRVL chop-day loss). In chop, the best trade is usually no trade.
+- **VOLATILE/RISK-OFF** (VIX >25, SPY breaking down): bullish setups unreliable; **favor PUTS, small size**, expect violent reversals.
+
+**Environment sizing:** VIX spiking + SPY breaking down = reduce size or sit out. VIX low + SPY new highs + strong breadth = full conviction OK. Mixed = A+ only, smaller size.
 
 ---
 
@@ -332,7 +347,7 @@ For BULLISH setups (long stock OR call buy):
 - Three consecutive higher-volume down days near recent highs (distribution)
 - Insider selling cluster in the last 2–4 weeks at meaningful sizes
 - Bid/ask spread wider than expected for the price range (poor liquidity)
-- Average daily volume <500K shares (illiquid)
+- Average daily volume <1M shares (illiquid — matches the 3a.0 gate; options need the underlying liquidity)
 
 **Exception — catching bottoms WITHOUT catching knives (reversals/base breakouts are allowed below the MAs, but ONLY with confirmation):** A name below its 200 SMA can be a great early long IF ALL FOUR hold:
 1. **The decline has STOPPED** — sideways base for several weeks, no new lower-lows. (A knife keeps making lower-lows; a base is flat. This is the dividing line.)
@@ -350,7 +365,7 @@ For BEARISH setups (put buy):
 - Insider BUYING cluster in the last 2–4 weeks (smart money sees value)
 - Heavily shorted already (high short float >25%) — squeeze risk
 - Bid/ask spread wider than expected (poor liquidity)
-- Average daily volume <500K shares (illiquid)
+- Average daily volume <1M shares (illiquid — matches the 3a.0 gate; options need the underlying liquidity)
 
 **Direction-eligibility — computed from the raw Robinhood candles in Step 3b (not from any prose source):**
 - **Full bullish stack** (price > 20 > 50 > 200 EMA, rising) = Stage 2 uptrend → LONG / CALL candidate
@@ -465,31 +480,11 @@ Compute the flow signals:
 
 ---
 
-**3d. Market environment check (CONTEXT — quick)**
-
-Before placing any trade, sanity-check the broader environment — **from Robinhood data**:
-
-- **SPY trend:** get_equity_quotes + get_equity_historicals on SPY — above/below its 20/50 EMA, trending or correcting? (compute from the bars, same as any candidate)
-- **VIX level:** get_index_quotes for VIX (it's an index) if available; else WebSearch `VIX today` as fallback. Under 18 = risk-on, 18–25 = neutral, over 25 = risk-off.
-- **Sector leadership:** get_equity_quotes on the sector ETFs (XLK, XLE, XLF, XLV, XLY) — which are green/leading today vs prior close? Trade leaders in leading sectors. (This also tells you which sector lists to mine in 3a.0.)
-- **Breadth:** infer from how broadly your sector-ETF quotes are green vs red; WebSearch advancers/decliners only if you want a precise read.
-
-**Environment rules:**
-- VIX spiking + SPY breaking down = reduce position sizing or sit out
-- VIX low + SPY making new highs + breadth strong = full conviction sizing OK
-- Mixed environment = take only A+ setups, smaller size
-
-**Market regime filter (decides HOW aggressive to be — check every run):**
-Determine which regime we're in from SPY behavior + VIX:
-- **TRENDING (SPY making higher highs/lows, riding above rising 20/50 SMA, VIX <18):** Momentum and breakout setups work best. Trade normally, press winners, pyramid is OK. This is when directional options pay.
-- **CHOPPY/RANGE-BOUND (SPY oscillating in a range, flat MAs, no follow-through on breakouts, VIX 15–22):** This is where overtrading kills you — breakouts fail, stops get hit on noise. **Raise the bar to A+ only, cut size, and strongly prefer sitting in cash.** Most "setups" in chop are traps. The MRVL chop-day loss happened here.
-- **VOLATILE/RISK-OFF (VIX >25, SPY breaking down, wide daily ranges):** Bullish setups are unreliable; this is prime PUT environment. Favor bearish setups, keep size small, expect violent reversals. Don't try to catch falling-knife longs.
-
-State the detected regime explicitly in your log each run, and let it govern aggression. **In chop, the best trade is usually no trade.**
+**3d. (Environment & regime were already read at the top — Step 3.0.)** Before finalizing, re-confirm the regime call from 3.0 still holds and apply it to your shortlist's direction + sizing. No need to re-pull the data.
 
 ---
 
-**3e. Final selection — get quotes and verify**
+**3e. Final selection — verify before executing**
 
 - Call get_equity_quotes on your TRADE-verdict shortlist (batch up to 20 per call) for real-time bid/ask
 - Compare last_trade_price vs adjusted_previous_close to quantify intraday momentum
@@ -521,7 +516,7 @@ For OPTIONS trades (calls for bullish, puts for bearish):
 - **If earnings fall before your option's expiration AND you are NOT intentionally playing the event → either pick an expiration that clears earnings, or skip.** Holding a long option through earnings = IV-crush roulette; you can be right on direction and still lose. This is the single most common options blunder — the gate is mandatory.
 
 **Workflow:**
-1. get_option_chains (underlying_symbol) → expirations. Choose one **4–6 weeks out** (longer-dated to respect theta on the slightly-OTM strikes) that clears any earnings date.
+1. get_option_chains (underlying_symbol) → expirations. **If you already pulled this chain + quotes in 3c+ for the flow read, REUSE that data — don't re-fetch.** Choose an expiration **4–6 weeks out** (longer-dated to respect theta on the slightly-OTM strikes) that clears any earnings date.
 2. get_option_instruments (filter expiration + type) → list candidate strikes with their option_ids
 3. get_option_quotes on the candidate strikes → now use the RICH data this returns:
    - **Delta-based strike selection:** target **delta 0.40–0.55 (ATM to slightly OTM)** for a balance of convexity and survivability. This band gives strong upside leverage (a slightly-OTM contract can run +200%+ on a clean move) while keeping enough delta (~0.40–0.55 move per $1) to actually track the underlying and survive normal noise without the catastrophic stop firing. For CALLS that's ATM-to-slightly-above spot; for PUTS the equivalent (delta -0.40 to -0.55). **Avoid far-OTM <0.30 as a default** (lottery-ticket theta bleed, low hit rate, trips the stop on noise) and >0.70 (too expensive, low convexity). To respect theta on the OTM lean, prefer **4–6 weeks** to expiration.
