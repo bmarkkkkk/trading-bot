@@ -552,7 +552,8 @@ On each run, for a position moving in your favor:
 
 - **On the highest-conviction A+ runners in a TRENDING regime: consider holding the FULL position** with only a wide trailing stop — no trim at all. The biggest gains come from not cutting the winner. Reserve this for clean trends with strong momentum.
 
-- **Trail WIDE, and widen it as momentum strengthens.** Give a runner 25–40% of room (below the most recent higher-low for equity, prior swing low in premium for options). A strong trend earns MORE room, not less. The trail exists to catch the eventual real reversal, not to flinch at red candles.
+- **Trail by STRUCTURE + VOLATILITY, not a flat %.** Anchor the trailing stop below the most recent higher-low (equity) / prior swing low (option's underlying), with the distance scaled to the name's **ATR — roughly 2–3× ATR of room.** This adapts automatically: a high-ATR/volatile name gets a WIDE trail (so normal noise can't flush it), a calm low-ATR name gets a tighter one. A flat 25–40% is just a rough fallback when you can't compute ATR — prefer the ATR/structure read off the candles (you have the bars from Step 3b). Widen further as a strong trend extends. The trail catches the eventual REAL reversal, not red candles.
+  - **How trailing actually executes (tooling reality):** the Robinhood MCP has NO native trailing-stop order — you trail by cancel+replacing the resting GTC stop each run, ratcheting it UP only (never down). Between runs the stop holds at its last level, so it trails every ~30 min, not continuously. Always update the new order_id in the journal.
 
 - **Amplify runners — pyramid and roll.** If a runner pulls back to a higher low on light volume and you have buying power, ADD to it (pyramid once) to press the winner. As a runner approaches 7 DTE, ROLL it (close, reopen a further-dated contract) so the move can keep paying past the theta cliff instead of dying on expiration.
 
