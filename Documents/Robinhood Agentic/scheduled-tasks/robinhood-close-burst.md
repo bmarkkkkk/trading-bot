@@ -1,20 +1,29 @@
 ---
 name: robinhood-close-burst
-description: Burst trader — fires at 12:40 and 12:50 PM PDT to fill the closing 30-min window at 10-min cadence
+description: Burst trader — fires at 12:40 and 12:50 PM PDT for the closing bell window (10-min cadence)
 ---
 
-You are an autonomous trading agent firing during a HIGH-VOLUME CLOSING-BELL window (last 30 min before US market close).
+Use the Read tool to load the main trading framework:
 
-**Step 1: Load the main framework**
-Use the Read tool to read the file at `/Users/BrianMarkus/.claude/scheduled-tasks/robinhood-active-trader/SKILL.md`. That file contains the complete trading framework, account details, risk rules, and execution logic. Execute its instructions exactly.
+```
+Read: TRADING_PROMPT.md (root of this repository)
+```
 
-**Step 2: Power-hour close context (apply on top of the main framework)**
-This is a BURST run — every 10 minutes instead of the standard 30. You're firing in the last 30 minutes of the trading day, which has its own dynamics:
+Execute all instructions exactly, then apply these **closing bell burst overrides on top**:
 
-- **End-of-day positioning matters** — institutional flows and rebalancing happen here. Watch for sudden volume spikes that signal large funds entering or exiting
-- **Decide on overnight holds carefully** — if a position is showing weakness into the close on rising volume, take profits or cut. Don't carry losers overnight in a small account
-- **Look for late-day breakouts** — names that ground sideways midday and break out in the last 30 min often continue into the next day
-- **Watch for end-of-day dumps** — funds rebalancing into the close can crater a name on heavy volume. If your position fades into the close on volume, get out
-- **Same hard rules apply** — MA stack, no chasing, no insider-distribution names
+## Closing Bell Burst Context (3:30–4:00 PM ET)
 
-After completing, log decisions concisely with timestamps.
+This is a BURST run — 10-minute cadence instead of 30. You're in the last 30 minutes of the trading day.
+
+- **Overnight hold decision is critical.** For every open position, explicitly decide: hold overnight or close? Default lean is to close — small accounts should not carry unnecessary overnight gap risk. Hold only if: (a) the thesis is strong and momentum is intact into the close, AND (b) you've taken partial profits to reduce cost basis (house money).
+- **End-of-day institutional flows.** Watch for sudden volume spikes — large funds entering or exiting for rebalancing. If your position fades hard into the close on rising volume, get out.
+- **Late-day breakouts are valid setups.** Names that chop sideways midday and break out in the last 30 min with volume often continue into the next day.
+- **Tighter stops than midday** — with 30 minutes left, there's no time to recover from a bad entry. Only take setups with very clear risk levels.
+- **Hard rules unchanged** — MA stack, no chasing, liquidity gates on options.
+
+**Overnight disposition rules (apply in Step 2 position review):**
+- Position is profitable + momentum intact → consider holding, but sell at least 1 contract / half shares to lock in cost basis
+- Position is flat or slightly down → close it. Don't give the overnight gap a chance to turn a flat into a loss.
+- Position is a winner showing signs of fading volume into close → take full profit now. Don't let a winner become a loser overnight.
+
+After completing, log decisions with timestamps per Step 5 and save state per Step 6. The state.md written this run is especially important — it becomes the memory for tomorrow's first run.
