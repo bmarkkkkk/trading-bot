@@ -167,21 +167,21 @@ Build a universe of 30+ candidates. Hunt BULLISH (call buys / equity longs) AND 
 
 Robinhood's structured data is far better than WebSearch for finding plays — it's real, current, and broad (WebSearch returns editorial "stocks to buy" fluff that keeps defaulting to the same mega-caps). Build the universe from these FIRST:
 
-1. **get_popular_watchlists** then **get_watchlist_items** on these list_ids to pull real symbols:
-   - **Daily movers** (`eddbebe5-34cc-4df1-953c-d3e3cb55bc19`) — the day's actual biggest movers across the whole market. PRIMARY hunting ground for both breakouts (up movers) and breakdowns (down movers).
-   - **Upcoming earnings** (`a18cdf8c-46c3-4585-be8f-d2cd57ec8bb1`) — names with imminent earnings = catalyst plays AND a heads-up for the earnings gate.
-   - **100 most popular** (`e8ef4c1f-244f-4db5-a582-c4c37f3c8e8e`) — highly liquid, options-friendly names; good for clean setups with tight option spreads.
-   - **Rotate through 1–2 SECTOR lists each run** to hunt beyond mega-cap tech (the bot over-defaults to semis). Energy (`1bb3fceb...`), Healthcare (`917fdacd...`), Finance (`4babfae9...`), Software (`79254266...`), Pharma (`39849561...`), Sector ETFs (`196033c3...`). Pick sectors that the regime/rotation check (3d) says are leading or breaking down.
+1. **get_popular_watchlists** then **get_watchlist_items** — build the universe from liquid, OPTIONABLE names:
+   - **100 most popular** (`e8ef4c1f-244f-4db5-a582-c4c37f3c8e8e`) — **START HERE, this is your core universe.** Deeply liquid, real option chains, tight spreads. Pull fundamentals on the whole list.
+   - **Upcoming earnings** (`a18cdf8c-46c3-4585-be8f-d2cd57ec8bb1`) — catalyst plays + feeds the earnings gate.
+   - **Rotate 1–2 SECTOR lists each run** to hunt beyond mega-cap tech: Energy (`1bb3fceb...`), Healthcare (`917fdacd...`), Finance (`4babfae9...`), Software (`79254266...`), Pharma (`39849561...`), Sector ETFs (`196033c3...`). Pick sectors the regime/rotation check (3d) says are leading or breaking down.
+   - **Daily movers** (`eddbebe5-34cc-4df1-953c-d3e3cb55bc19`) — SECONDARY only. It's mostly thin small-caps/ADRs that fail the liquidity + options gate; skim it for any LIQUID, optionable name with a catalyst, but don't lean on it as the primary net.
 
-2. **Quant-rank the pooled symbols with get_equity_fundamentals** (batch up to 10 per call). For each, compute the REAL metrics — no guessing:
-   - **Relative volume = today's `volume` ÷ `average_volume_2_weeks`.** >1.5 = institutional footprint, the single best "something is happening here" signal. But read it TOGETHER with how far price has moved today (see "catch the move, don't chase it" below): **high rel-volume + SMALL price move so far = early accumulation, the best entries** (you're getting in as it begins). High rel-volume + already a big move = you're late.
-   - **Distance from 52-week high/low** — near 52w high on volume = breakout candidate; near 52w low on volume = breakdown candidate.
-   - **Float** — small float (<50M) + high rel-volume = explosive potential (and squeeze risk on puts). **Market cap** — use to keep the net diversified across sizes, not just mega-caps.
-   - **Liquidity gate:** drop anything with `average_volume` <1M shares or that's a thin ADR — it won't have tradeable options or clean fills.
+2. **Pull get_equity_fundamentals on the universe (batch 10) and CLASSIFY each by where it sits in its 52-week range — hunt ALL setup types, not just near-highs:**
+   - **Near 52w HIGH (top ~15% of range)** → breakout / momentum-continuation candidate (call)
+   - **MID-RANGE / coiling** → consolidation or BASE-BUILDING. **Do NOT skip these — the breakout from a long base is the single highest-R/R setup in trading.** A name that crashed and has gone sideways for months is a Stage 1 base; catching its Stage 2 breakout is where the biggest, earliest gains are.
+   - **Near 52w LOW (bottom ~15%)** → could be a breakdown (PUT) OR a bottoming/reversal forming. Determine which in deep TA — a confirmed reversal off a base is a great early long; a knife still falling is a put or a no-touch.
+   - Compute **relative volume** (volume ÷ avg_volume_2_weeks; >1.5 = footprint) and read it with the day's move: high rel-vol + small move = early accumulation = best entry.
+   - **Liquidity gate:** drop avg_volume <1M or thin ADRs (no tradeable options).
+   - **Affordability (small-account reality):** favor underlyings whose option premium actually fits your per-position budget — generally lower-priced names. A clean setup whose single contract costs more than your buying power is NOT actionable (see Step 4 small-account sizing). Don't waste deep-TA cycles on $300+ stocks if you can't afford the contract.
 
-3. **Keep only names with liquid, tradeable options** (since options are now the primary vehicle). A quick get_option_chains check confirms a real chain exists; the per-contract liquidity filters (OI/volume/spread) get applied later at execution.
-
-This gives you a broad, real, quant-ranked universe across the whole market every run.
+**You are hunting THREE setup families, not one:** (a) breakouts/continuations near highs, (b) base breakouts from long consolidations (mid-range), and (c) confirmed reversals off bottoms. Most of the bot's misses come from only looking at (a). Cast across all three every run.
 
 ---
 
@@ -291,6 +291,8 @@ Pull every ticker mentioned across all queries. Note the setup type for each (br
 5. **VWAP reclaim** — stock spent morning below VWAP, reclaims and holds with volume
 6. **Relative strength leader** — green while SPY is red, or up >2x SPY on green days
 7. **Gap-and-go** — opens gapped up, holds the gap, then pushes higher with volume
+8. **Base breakout / reversal from a bottom (Stage 1 → Stage 2)** — a beaten-down or sideways name that has STOPPED falling, built a multi-week base, and is now breaking ABOVE the base or reclaiming a key MA on a volume surge. This is NOT near a 52w high and that's fine — base breakouts and confirmed reversals are some of the best risk/reward longs (you're early, with a tight stop below the base). Requires strict confirmation (see disqualifier exception) so it never becomes a falling-knife catch.
+9. **Double bottom / higher-low reversal** — price tests support twice (or makes a higher low after a downtrend), then breaks above the interim swing high (neckline) on volume = confirmed turn.
 
 **Technical setups to hunt for — BEARISH (for PUT BUYS via options when available):**
 1. **Base breakdown on volume** — break BELOW multi-week consolidation/support on ≥1.5x avg volume (mirror of bullish breakout — same R/R quality)
@@ -306,13 +308,21 @@ Pull every ticker mentioned across all queries. Note the setup type for each (br
 **Immediate disqualifiers — DIRECTION-AWARE:**
 
 For BULLISH setups (long stock OR call buy):
-- **Price below the 20 SMA OR 50 SMA** — DISQUALIFY for longs. Catching a falling knife is the #1 way small accounts blow up.
+- **Falling knife — DISQUALIFY.** Price below the 20/50 SMA AND still making lower-lows, no base, no confirmation = catching a falling knife (this is what killed the BWXT idea). BUT — below the MAs is NOT an automatic disqualifier if a reversal/base-breakout is CONFIRMED; see the exception below.
 - Already extended +5%+ intraday on a parabolic candle (chase risk)
 - Wide-range red candle into prior resistance (exhaustion)
 - Three consecutive higher-volume down days near recent highs (distribution)
 - Insider selling cluster in the last 2–4 weeks at meaningful sizes
 - Bid/ask spread wider than expected for the price range (poor liquidity)
 - Average daily volume <500K shares (illiquid)
+
+**Exception — catching bottoms WITHOUT catching knives (reversals/base breakouts are allowed below the MAs, but ONLY with confirmation):** A name below its 200 SMA can be a great early long IF ALL FOUR hold:
+1. **The decline has STOPPED** — sideways base for several weeks, no new lower-lows. (A knife keeps making lower-lows; a base is flat. This is the dividing line.)
+2. **A defined support floor that's held 2+ times** — double/triple bottom or a rounding bottom.
+3. **A confirmation TRIGGER has fired** — price broke ABOVE the base's resistance / interim swing high, OR reclaimed and is HOLDING a key MA (e.g. the 50 EMA) from below — on a volume surge (≥1.5×).
+4. **Accumulation in the base** — up-bars on higher volume during the consolidation.
+
+If all four hold → trade it; stop goes below the base floor (defined risk). If it's merely "oversold and near support" WITHOUT the confirmed break (the PayPal example), it's a **WATCH, not a trade** — wait for the trigger. The confirmation is what separates a great reversal entry from a knife.
 
 For BEARISH setups (put buy):
 - **Price above the 20 SMA AND 50 SMA on rising volume** — DISQUALIFY for puts. Shorting strength is the mirror trap of catching a falling knife.
@@ -324,10 +334,11 @@ For BEARISH setups (put buy):
 - Bid/ask spread wider than expected (poor liquidity)
 - Average daily volume <500K shares (illiquid)
 
-**MA stack determines direction-eligibility — computed from the raw Robinhood candles in Step 3b (not from any prose source):**
-- **Full bullish stack** (price > 20 > 50 > 200 EMA, MAs rising) = Stage 2 uptrend → LONG / CALL candidate
-- **Full bearish stack** (price < 20 < 50 < 200 EMA, MAs falling) = Stage 4 downtrend → PUT candidate
-- Mixed (e.g. price > 200 but < 20) = consolidation / transition → WATCH, no trade
+**Direction-eligibility — computed from the raw Robinhood candles in Step 3b (not from any prose source):**
+- **Full bullish stack** (price > 20 > 50 > 200 EMA, rising) = Stage 2 uptrend → LONG / CALL candidate
+- **Full bearish stack** (price < 20 < 50 < 200 EMA, falling) = Stage 4 downtrend → PUT candidate (OR a reversal-in-progress — check the exception)
+- **Transition (price below the MAs BUT a CONFIRMED reversal/base-breakout per the exception above)** = early Stage 1→2 → LONG / CALL candidate, with the strict 4-point confirmation
+- **Mixed / coiling with no confirmed break yet** = WATCH, no trade (this is the holding pen for bases — revisit each run for the trigger)
 
 ---
 
@@ -572,7 +583,12 @@ Once cost basis is recovered, the remaining contracts are pure profit. There is 
 
 **Sizing by setup quality — with a HARD options cap that always wins:**
 
-The setup-quality tiers describe conviction. But because options are leveraged, **any single OPTIONS position is capped at ~40% of buying power regardless of tier** — defined risk still means a single position can lose its whole premium, and you never want one option to be able to take a catastrophic chunk. The bigger tier percentages apply to EQUITY positions (no leverage) or to total directional commitment, not to one option.
+The setup-quality tiers describe conviction. Because options are leveraged, **a single OPTIONS position is normally capped at ~40% of buying power** — the bigger tier percentages apply to equity (no leverage) or total directional commitment, not one option.
+
+**SMALL-ACCOUNT MODE (auto-applies when buying_power < ~$2,000):** A 40% cap on a tiny account (e.g. 40% of $572 = $230) is unrealistic — most quality option contracts cost more than that, so the cap would force near-permanent no-trade (confirmed in testing: a clean GOOGL 0.51-delta call cost $1,308 against $572 BP). In small-account mode:
+- Allow a single defined-risk option up to **~60–70% of buying power** (it's capped-loss anyway — the whole premium is the max loss, which you've already accepted by sizing it).
+- **Bias hard toward affordable underlyings** — generally sub-$150, often sub-$100 stocks — so a clean contract actually fits the budget (e.g. UBER, SOFI, INTC, HOOD, F, PLTR-tier names, and liquid ETFs). A perfect setup on a $400 stock whose contract costs $1,500 is not actionable here; pass it and find the same setup on an affordable name.
+- This is a stopgap for small size, not the end state — **the real fix is adding capital.** At ~$5K+ BP the standard ~40% cap resumes and the full liquid universe (GOOGL, NVDA, etc.) becomes affordable.
 
 - **A+ setup** (clean TA + strong regime + at least TWO of: fresh hard catalyst, **aligned options flow (3c+)**, leading sector): equity up to 60–80% of BP; **single option capped at ~40% of BP** (if you want more A+ exposure, you've maxed the single-option cap — that's intentional). Clean TA + aligned options flow is the signature A+ "everything lines up" trade.
 - **A setup** (clean TA + at least ONE of: catalyst, aligned options flow, sector tailwind): equity 40–60%; single option ~25–40%.
