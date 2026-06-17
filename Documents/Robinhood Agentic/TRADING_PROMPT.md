@@ -567,9 +567,9 @@ In the close-burst window, classify every open position for its overnight dispos
 
 2. **Already a free-roll / cost basis already recovered → hold overnight.** That's the point — capture the gap, nothing at risk.
 
-3. **Flat-but-GOOD position (thesis intact, quality setup, real conviction) → fine to hold overnight,** subject only to the leverage cap below. Holding a good play through the night is fully acceptable — overnight gaps cut in your favor too, and a long option's downside is already defined. Don't close a quality position just because it hasn't moved yet.
+3. **GOOD position — up, flat, OR modestly down — with thesis intact and real conviction → fine to hold overnight, with CALCULATED RISK.** The overnight cut test is the THESIS, not the P&L color. A quality setup that's temporarily red on normal noise, with its structure/catalyst still valid, is a legitimate hold — being down is not the same as being wrong, and a long option's downside is already defined. "Calculated risk" means: the position's remaining capital-at-risk is an amount you've consciously accepted AND it fits under the leverage cap below. If it's a bigger drawdown, confirm the thesis is genuinely intact (not just hope) before carrying it.
 
-4. **Flat/losing MARGINAL position (low conviction, speculative, thesis never really confirmed, or you're just hoping for a gap) → CLOSE into the bell.** This is the one to cut — a not-working low-conviction option overnight is a coin flip with theta bleeding you. The test is conviction/quality, not green-vs-flat.
+4. **CUT into the bell only if:** (a) the thesis is BROKEN (chart structure broke, catalyst reversed) — cut regardless of time of day; (b) it's a MARGINAL/low-conviction position you're just holding to gamble on a gap — a coin flip with theta against you; or (c) it's already hit the catastrophic-loss threshold. The dividing line is conviction + thesis, never green-vs-flat-vs-down.
 
 **Overnight leverage cap (the real governor — this is what prevents over-leverage):**
 The goal isn't to avoid holding overnight — it's to avoid being OVER-LEVERAGED overnight. Applies to positions still carrying capital at risk (free-rolls don't count — nothing at risk):
