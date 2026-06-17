@@ -328,6 +328,8 @@ Pull every ticker mentioned across all queries. Note the setup type for each (br
 16. **Downtrend-line break + 50 EMA reclaim** — price breaks the descending trendline AND reclaims/holds the 50 EMA on volume = trend change
 17. **Oversold mean-reversion bounce** — off major horizontal support or the 200 EMA, WITH a reversal candle (hammer/engulfing) + volume (not just "it's oversold")
 
+**★ PRIORITY SETUP — the RESISTANCE POP (flag / wedge / triangle breakout):** across bull flags (6), ascending triangles (8), falling wedges (14), and pennants, the highest-conviction ENTRY is the moment price POPS above the consolidation's upper boundary — the flag's top, the wedge's resistance line, the triangle's flat top, or the prior swing-high resistance — on a **VOLUME SURGE (≥1.5×)**. The break of resistance + volume confirmation IS the trigger. Two valid entries: (a) on the pop itself as it clears resistance on volume, or (b) on the first tight retest where former resistance becomes support (lower-risk — stop just below the broken level). Prioritize these resistance-pop breakouts: they're clean, defined-risk, high-R/R, and work in any zone (a flag near highs, a wedge off a bottom, a triangle mid-range). A "pop" on weak volume is suspect — wait for the volume to confirm the break is real, not a fakeout.
+
 **Technical setups to hunt for — BEARISH (for PUT BUYS via options when available):**
 1. **Base breakdown on volume** — break BELOW multi-week consolidation/support on ≥1.5x avg volume (mirror of bullish breakout — same R/R quality)
 2. **Bear flag continuation** — sharp move down, tight 2–5 day relief bounce on lower volume, then resumption lower
