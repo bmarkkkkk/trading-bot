@@ -72,7 +72,7 @@ When to favor options over stock (applies to BOTH calls AND puts):
 
 Options sizing rules (symmetric for calls and puts):
 - Never risk more than 30–40% of buying power on a single options position
-- Favor near-the-money or slightly OTM contracts with 2–6 weeks to expiration (enough time, not too much decay)
+- Select strikes by DELTA (0.55–0.70 — ATM to slightly ITM; see Step 4 for detail), with 2–6 weeks to expiration (enough time, not too much decay). This delta band beats a fixed "near/slightly-OTM" rule — enough directional punch without far-OTM decay.
 - **Buy CALLS for bullish plays** — directional bet up
 - **Buy PUTS for bearish plays** — directional bet down (NOT just hedges; these are full conviction directional trades)
 - **Profit-taking and loss-cutting are governed by the runner-capture system (Steps 4a–4c), NOT a flat take-profit number.** Do not blanket-exit at +50%. The model is: wide catastrophic stop (~55–65%) as the hard floor, hold winners, take house money at ~+80–100% to create a free roll, then let the runner run per the Step 4c ladder. Cuts are thesis-based, not P&L-based (except the catastrophic floor). This is what captures the big runners instead of leaking tiny gains.
@@ -505,6 +505,8 @@ For OPTION long positions (calls or puts):
 
 **Record the protective stop's order_id in trade_journal.md** alongside the position. You'll need it to cancel/replace when you adjust (trailing) or close manually.
 
+**If the protective stop is REJECTED, never leave the position naked.** Common cause: a sell stop_price must be below the current bid/price — if the underlying already moved, adjust the stop to a valid level and retry. If it still won't place after a retry, flag it loudly in the journal (`NO PROTECTIVE STOP — manage manually`) and treat that position as requiring a hard look every single run until a stop is on or it's closed. A position without a working stop is the one situation the whole risk model is built to avoid.
+
 **When you close or adjust a position manually on a later run: CANCEL the resting protective stop first** (cancel_equity_order / cancel_option_order), then place the new order — otherwise you risk a double-exit.
 
 ### Step 4b: CAPTURE THE FULL RUNNER — let winners run, don't choke them
@@ -566,7 +568,7 @@ Overnight gaps cut both ways, and **protective stops do NOT work overnight** (th
 
 In the close-burst window, classify every open position for its overnight disposition:
 
-1. **Winner in meaningful profit (~+40%+ on an option, or a clear equity gain) → take HOUSE MONEY, let the rest ride overnight.** Sell just enough to recover cost basis; the free-roll remainder carries overnight with **zero capital at risk and full gap-up upside.** This is the primary tool — it gives you the entire overnight upside with none of the downside. (If it's a single contract and can't be split: hold the whole thing only if conviction is high and the full premium is an acceptable overnight risk; otherwise close for the gain.)
+1. **Winner in meaningful profit (~+40%+ on an option, or a clear equity gain) → take HOUSE MONEY, let the rest ride overnight.** Sell just enough to recover cost basis; the free-roll remainder carries overnight with **zero capital at risk and full gap-up upside.** This is the primary tool — it gives you the entire overnight upside with none of the downside. (Note: this +40% overnight trigger is intentionally LOWER than the intraday house-money threshold (~+80–100%) — into an unhedged overnight gap you de-risk earlier, because the protective stop won't help you until the open.) (If it's a single contract and can't be split: hold the whole thing only if conviction is high and the full premium is an acceptable overnight risk; otherwise close for the gain.)
 
 2. **Already a free-roll / cost basis already recovered → hold overnight.** That's the point — capture the gap, nothing at risk.
 
