@@ -173,6 +173,12 @@ You are the trader. No one else's positioning, no one's tweet, no one's fund mat
 
 **Environment sizing:** VIX spiking + SPY breaking down = reduce size or sit out. VIX low + SPY new highs + strong breadth = full conviction OK. Mixed = A+ only, smaller size.
 
+**★ READ THE DAY'S DOMINANT STORY — trade the THEME, not isolated charts.** Beyond the mechanical regime read, name WHAT is actually driving the tape and WHY: an AI/semis melt-up on a specific deal, a rates/risk-off move, an energy selloff on oil, a single-sector catalyst. The dominant theme is where the real money, momentum, and follow-through are — that's where your exposure belongs. Rules:
+- **Position WITH the dominant theme.** If semis are ripping on a chip-deal catalyst, your trade should be IN that theme (the best on-theme name on a pullback), not in an unrelated sluggish corner.
+- **Do NOT get stranded off-theme.** Parking capital in a quiet, off-theme name (a low-energy sector ETF) while the real move happens elsewhere is a mistake even if that name has a "clean chart." Small edge, wrong place — that's exactly what the two opening losses (XLF/XLE while semis ran) were.
+- **If the theme's leaders are all EXTENDED, WAIT for a continuation/pullback entry in the theme — do NOT force an off-theme trade to "be active."** The right answer to "semis are extended" is "wait for the semi pullback (the least-extended name, on a confirmed trigger)," NOT "buy unrelated financials." Cash beats a mediocre off-theme trade.
+- **The STORY picks the theme and explains the conviction; the CHART times the entry. Use both — never isolated price action alone, and never a narrative without a chart trigger.** (This is reading the observable tape + hard catalysts, NOT following pundits.)
+
 ---
 
 **3a. Cast a wide net — SCAN BOTH DIRECTIONS**
