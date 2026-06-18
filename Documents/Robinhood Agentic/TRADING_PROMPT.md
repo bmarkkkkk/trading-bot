@@ -44,8 +44,9 @@ Adapt your aggression and strategy to the session:
 
 **Open (9:30–10:30 AM):**
 - Maximum opportunity AND maximum noise. First 15 minutes are chaos — the 10:00 AM run is your sweet spot.
-- Look for: opening range breakouts, gap-and-go setups (stock gaps up, holds, then pushes higher with volume), reversal traps (stock gaps down but buyers step in hard).
-- This is when you want to be putting capital to work. Best risk/reward of the day.
+- Look for: opening range breakouts, gap-and-go setups (stock gaps up, HOLDS, then pushes higher with volume), reversal traps (stock gaps down but buyers step in hard).
+- **Do NOT chase the open spike.** A gap-and-go is an entry on the HOLD/consolidation after the gap (or the first pullback that holds) — NOT the gap candle itself. If a name already gapped + ran ≳1–1.5× ATR before your run fires, the move happened pre-market; you missed it → watch for the pullback or move on. The morning's job is to enter setups that are still EARLY (within ~1 ATR of their trigger), not to buy whatever already exploded overnight.
+- This is when you want to be putting capital to work — but in early-stage setups, not extended ones. Best risk/reward of the day comes from getting in BEFORE the move, not after.
 
 **Midday (10:30 AM–2:00 PM):**
 - Volume fades, ranges tighten. Chop city.
@@ -214,9 +215,10 @@ Use WebSearch NOT as the primary screener but to catch real-time news the struct
 
 Mover/most-popular lists show what ALREADY moved. They're a starting universe, NOT buy signals. Buying whatever is up the most = buying the top from the people who caught the real move. For EVERY candidate, classify where it is in its move and act accordingly:
 
-- **EARLY (best — this is "catching" the move):** fresh breakout from a multi-week base, OR first clean push off support, with rising relative volume but price NOT yet extended (small-to-moderate move so far today, still near the breakout level not far above it). You're getting in as the move begins. **Trade these aggressively.**
+**Judge "how far it's moved" in ATR, not %** (ETFs/indexes move in fractions of a percent — 1–2% can be a full chase; high-beta names need much more). Use the name's own ATR from Step 3b.
+- **EARLY (best — this is "catching" the move):** fresh breakout from a multi-week base, OR first clean push off support, with rising relative volume and price **still within ~1 ATR of the breakout/trigger level** (not far above it). You're getting in as the move begins. **Trade these aggressively.**
 - **CONTINUATION (also good — entering the next leg):** name moved earlier (yesterday / earlier today), then PULLED BACK to a higher-low / 20-MA / VWAP and is resuming. The bull-flag and pullback patterns are exactly this — you're buying the second leg at a defined-risk entry, not chasing the first. **Trade these.**
-- **EXTENDED / EXHAUSTED (you missed it — SKIP):** already up big (the parabolic candle, multiple green days far above the base, RSI stretched). The move happened without you. Do NOT chase. Put it on watch for the eventual pullback (which becomes a CONTINUATION entry) instead of buying the top.
+- **EXTENDED / EXHAUSTED (you missed it — SKIP):** already run **≳1.5–2× ATR past the trigger** (or gapped ≳1 ATR, or multiple green days far above the base, RSI stretched). The move happened without you. Do NOT chase. Put it on watch for the eventual pullback (which becomes a CONTINUATION entry) instead of buying the top. **Better: spend that effort finding the NEXT name that hasn't moved yet — coiling, basing, pre-breakout — and get in before it goes.**
 
 **The discipline:** when a name pops up on Daily movers, the question is never "it's moving, buy it" — it's "is this the START of a move I can ride, a PULLBACK I can enter, or a move that already happened?" Only the first two are trades.
 
@@ -345,7 +347,9 @@ Pull every ticker mentioned across all queries. Note the setup type for each (br
 
 For BULLISH setups (long stock OR call buy):
 - **Falling knife — DISQUALIFY.** Price below the 20/50 SMA AND still making lower-lows, no base, no confirmation = catching a falling knife (this is what killed the BWXT idea). BUT — below the MAs is NOT an automatic disqualifier if a reversal/base-breakout is CONFIRMED; see the exception below.
-- Already extended +5%+ intraday on a parabolic candle (chase risk)
+- **EXTENDED / CHASE — measured in ATR, NEVER a blanket %.** Judge every move against the instrument's OWN average true range (ATR, from Step 3b), not a fixed percentage. A move is a chase if **price has already run ≳1.5–2× ATR from the breakout/base/trigger level**, or today's move alone is **≳1.5× the name's average daily range**. This auto-scales: a **2% move on a low-volatility ETF (XLF, SPY) can be 2–3× its daily range = a big extended move = DON'T chase**, while 5% on a high-beta small-cap may be <1× its range = still fine. **Never use "5%" or "2%" as a universal threshold — translate to ATR every time.** (Indexes/ETFs move in fractions of a percent; even 1% can be a chase. Single high-beta names need a much larger % to be "extended.")
+- **GAPPED ≳1× ATR overnight (open vs prior close, in ATR terms) — the move ALREADY HAPPENED while you were out. Do NOT buy the gap or the open spike.** Tradeable only AFTER it pulls back and the pullback HOLDS (controlled higher-low continuation), or it builds a fresh tight base and breaks out anew. If it just keeps running, let it go — find the next setup.
+- **Multi-day extension:** already run ≳3–4× ATR over the last few sessions / multiple green days far from its base = late, even if today's candle is small.
 - Wide-range red candle into prior resistance (exhaustion)
 - Three consecutive higher-volume down days near recent highs (distribution)
 - Insider selling cluster in the last 2–4 weeks at meaningful sizes
@@ -362,7 +366,7 @@ If all four hold → trade it; stop goes below the base floor (defined risk). If
 
 For BEARISH setups (put buy):
 - **Price above the 20 SMA AND 50 SMA on rising volume** — DISQUALIFY for puts. Shorting strength is the mirror trap of catching a falling knife.
-- Already extended -5%+ intraday on a capitulation candle (don't short the bottom)
+- Already extended to the downside in ATR terms (run ≳1.5–2× ATR below the breakdown level, or a capitulation candle ≳1.5× the average daily range) — don't short the bottom / chase a move that already happened. Measure in ATR, not a blanket %.
 - Wide-range green candle off prior support (reversal in progress — exhausted selling)
 - Three consecutive higher-volume up days near recent lows (accumulation pattern)
 - Insider BUYING cluster in the last 2–4 weeks (smart money sees value)
