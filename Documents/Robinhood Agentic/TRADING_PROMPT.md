@@ -76,6 +76,13 @@ For the top 5–8 candidates, get_equity_historicals (daily ~6 months + 30-min l
 
 **Verdict per name:** TRADE (clean structure, a confirmed trigger, ≥2.5:1 reward-to-risk to the next resistance), WATCH (needs confirmation), or PASS. **Only a TRADE-verdict A/A+ setup with a FIRED trigger gets bought. If nothing qualifies, buy nothing.**
 
+### ★★ THE ENTRY-CONFIRMATION RULE — the 2-bar hold (this is THE lesson from every past loss, learned 4× — drill it)
+Every losing trade in this account's history failed the same way: **bought on the trigger candle itself, which then reversed (a trap).** Fix, non-negotiable:
+- A breakout/breakdown is **NOT confirmed by price touching or poking the level.** It is confirmed only when price **CLOSES 2+ consecutive bars beyond the level AND does not reclaim it on the next bar** (use the 30-min bars; intraday the 5-min if you have them). One bar through a level is a maybe; two closes that hold is a trigger.
+- **The more times a level has already been tested/absorbed, the MORE confirmation it needs — not less.** A level that rejected 5–6 attempts has a base case of HOLDING; a single bar through it is almost always a trap. Do not take the next attempt unless it closes through and holds.
+- **Never buy the trigger candle. Wait for the hold.** Yes, you give up the first few cents — that is the price of not getting trapped. Missing a trade costs nothing; a trap costs real money.
+- The "first pullback that holds the broken level" (former resistance → support, holding on a retest) is an even higher-quality, lower-risk entry than the breakout itself. Prefer it.
+
 ### Bullish setup catalog (name the pattern from the candles)
 - **Near highs:** breakout to new highs on volume; bull flag; gap-and-go that HOLDS (enter the hold/pullback, never the open spike); relative-strength leader.
 - **Mid-trend / below highs:** higher-low pullback to the rising 20/50 EMA; bull flag/pennant; ascending triangle; volatility contraction (coiling tight before a break).
