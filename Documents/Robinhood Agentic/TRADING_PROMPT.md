@@ -75,7 +75,7 @@ For the top 5–8 candidates, get_equity_historicals (daily ~6 months + 30-min l
 6. **Support/resistance** from swing highs/lows + high-volume bars → your entry, stop, and target levels.
 7. **ATR(14):** for stop sizing and to judge extension in ATR terms (not %).
 
-**Verdict per name:** TRADE (clean structure, a confirmed trigger, ≥2.5:1 reward-to-risk to the next resistance), WATCH (needs confirmation), or PASS. **Only a TRADE-verdict A/A+ setup with a FIRED trigger gets bought. If nothing qualifies, buy nothing.**
+**Verdict per name:** TRADE (clean structure, a confirmed trigger, ≥2:1 reward-to-risk to the next resistance), WATCH (needs confirmation), or PASS. **Only a TRADE-verdict A/A+ setup with a FIRED trigger gets bought. If nothing qualifies, buy nothing.**
 
 ### ★★ THE ENTRY-CONFIRMATION RULE — the 2-bar hold (this is THE lesson from every past loss, learned 4× — drill it)
 Every losing trade in this account's history failed the same way: **bought on the trigger candle itself, which then reversed (a trap).** Fix, non-negotiable:
