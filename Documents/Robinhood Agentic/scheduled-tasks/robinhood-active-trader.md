@@ -59,12 +59,12 @@ Don't flat-scan the same handful of names. Work the funnel — wide & cheap at t
 
 **Tier 1 — rank the sectors (cheap, wide):** get_equity_quotes on ALL sector ETFs at once (XLK, XLE, XLF, XLV, XLY, XLI, XLP, XLU, XLB, XLRE, XLC + SMH/IGV/XBI for sub-themes). Rank by today's % change and by position vs their own 20/50-EMA. **Identify the 1–3 LEADING sectors** — that's where the day's energy and the best patterns are.
 
-**Tier 2 — pull candidates from the hot pocket + the movers (wide):**
-- For each leading sector, get_watchlist_items on that sector's list and pull its **strongest 4–6 names** (biggest % gainers / highest relative volume). Sector list IDs: Energy `1bb3fceb...`, Healthcare `917fdacd...`, Finance `4babfae9...`, Software `79254266...`, Pharma `39849561...` (rotate/add as needed).
-- ALSO pull **Daily Movers / top gainers** (market-wide, regardless of sector — catches the name running on its own catalyst) and skim the **100 most popular** (`e8ef4c1f-244f-4db5-a582-c4c37f3c8e8e`).
-- This should yield **~20–30 raw candidates** spanning the leading sectors + standout movers. get_equity_fundamentals (batch 10) for 52w-range position + **relative volume** (today's vol ÷ avg_volume_2_weeks; >1.5 = real interest).
+**Tier 2 — pull candidates from the hot pocket + the movers (keep it tight):**
+- From the 1–2 leading sectors, get_watchlist_items and pull each one's **strongest 3–4 names** (biggest % gainers / highest relative volume). Sector list IDs: Energy `1bb3fceb...`, Healthcare `917fdacd...`, Finance `4babfae9...`, Software `79254266...`, Pharma `39849561...` (rotate/add as needed).
+- ALSO pull **Daily Movers / top gainers** (market-wide — catches the name running on its own catalyst).
+- Target **~12–15 raw candidates**, not more. **Affordability pre-filter for this small account:** drop names whose share price makes a clean position+stop impossible on current buying power (e.g. a $1,000+ stock on ~$2.7k BP can't be sized/stopped sanely) — skip them BEFORE the deep dive so you don't burn the scan on un-tradeable names. get_equity_fundamentals (batch 10) for 52w-range position + relative volume.
 
-**Tier 3 — shortlist ~8–12 finalists** (those showing a possible pattern + relative volume) for the deep candle-TA in 3b. Liquidity gate: drop avg volume <1M shares.
+**Tier 3 — narrow to the 5–6 best, deep-dive only the top 2–3.** Of the raw candidates, keep the **5–6** showing a real possible pattern + relative volume. Pull full deep candle-TA (daily ~6mo + 30-min) on only the **top 2–3** most likely to trigger; for the rest a lighter daily-only read is enough to confirm/reject. This keeps the run fast and focused. Liquidity gate: drop avg volume <1M shares.
 
 **Coverage check:** if your finalists look like last run's finalists, you funneled too narrow — the leading sector rotates, so your names should too. Deliberately follow today's leadership, not yesterday's.
 
