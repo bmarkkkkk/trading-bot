@@ -27,7 +27,8 @@ Two files in this task's directory (`/Users/BrianMarkus/.claude/scheduled-tasks/
 # Every Run — Execute This Sequence
 
 ## Step 1: Assess state
-- Read trade_journal.md (recall every open position's thesis + stop). First run of the day, also read performance_log.md.
+- Read trade_journal.md to recall every **open position's** thesis + stop. First run of the day, also read performance_log.md.
+- **Use your memory AND scan fresh — do BOTH every run.** The journal's "Watching" list and prior notes are valuable continuity: keep them, keep learning from them, and re-check those setups (a watched level may have triggered). But they are NOT the whole job — the watch list must not be the ONLY thing you look at. Every run you ALSO run the full fresh top-down funnel (Step 3a) to surface NEW names from today's live leadership, then combine: carry forward the still-valid watched setups AND add the fresh movers. The bug to avoid is *only* re-checking the same watch names and never casting the wide net — not the memory itself.
 - Call get_portfolio + get_equity_positions + get_option_positions simultaneously. For each holding, get the live price (get_equity_quotes / get_option_quotes).
 - Note buying_power — that's what's actually spendable. **Compute current options exposure** (sum of open option premium values) as a % of account — you need this to respect the 20% options cap before any new option.
 - **Concurrent-run guard:** pull get_equity_orders (placed_agent='agentic', last ~10 min). If a buy was just placed, a prior run may still be mid-cycle → manage only, don't open a new position.
@@ -55,9 +56,11 @@ Read the tape so you know the wind direction — but it does NOT block a trade. 
 - Use regime to pick BETWEEN candidates and to size, not to sit out. The only true "stand down" is a violent risk-off crash (VIX >30 / SPY breaking down hard) where every chart is failing — then there are simply no clean bullish patterns to find.
 
 ### 3a — TOP-DOWN funnel: hot sector FIRST, then drill into its best names
-Don't flat-scan the same handful of names. Work the funnel — wide & cheap at the top, deep & expensive only at the bottom:
+Don't flat-scan the same handful of names. Work the funnel — wide & cheap at the top, deep & expensive only at the bottom. **Every run, run this fresh funnel in ADDITION to re-checking your watched setups** — carry the still-valid watch names forward AND surface fresh movers from today's live leadership, so the candidate list is never just yesterday's names.
 
-**Tier 1 — rank the sectors (cheap, wide):** get_equity_quotes on ALL sector ETFs at once (XLK, XLE, XLF, XLV, XLY, XLI, XLP, XLU, XLB, XLRE, XLC + SMH/IGV/XBI for sub-themes). Rank by today's % change and by position vs their own 20/50-EMA. **Identify the 1–3 LEADING sectors** — that's where the day's energy and the best patterns are.
+**⏰ Premarket guard (before the 6:30 AM PDT open):** there is no live intraday data — sector % moves, relative volume, and 30-min bars are all stale/empty, so the momentum funnel cannot rank anything. Do NOT run a fake funnel that just regurgitates yesterday's watch names. Instead do light PREP only: note overnight index/futures direction, any gap-movers, and today's earnings/catalyst names (get_earnings_calendar) — then WAIT. The real top-down scan begins at the 6:30 open when live data exists.
+
+**Tier 1 — rank the sectors (cheap, wide):** get_equity_quotes on ALL sector ETFs at once (XLK, XLE, XLF, XLV, XLY, XLI, XLP, XLU, XLB, XLRE, XLC + SMH/IGV/XBI for sub-themes). Rank by today's % change and by position vs their own 20/50-EMA. **Identify the 1–3 LEADING sectors** — that's where the day's energy and the best patterns are. This ranking is done from scratch each run off live quotes — whatever sector is hot TODAY drives the names, even if it's different from last run.
 
 **Tier 2 — pull candidates from the hot pocket + the movers (keep it tight):**
 - From the 1–2 leading sectors, get_watchlist_items and pull each one's **strongest 3–4 names** (biggest % gainers / highest relative volume). Sector list IDs: Energy `1bb3fceb...`, Healthcare `917fdacd...`, Finance `4babfae9...`, Software `79254266...`, Pharma `39849561...` (rotate/add as needed).
@@ -71,7 +74,7 @@ Don't flat-scan the same handful of names. Work the funnel — wide & cheap at t
 
 Take the **top 2–3** by that combined score and deep-dive them: full candle-TA (daily ~6mo + 30-min) → MA stack, RSI, ATR, pattern, levels, 2-bar-hold check. The 2–3 are where you spend the expensive calls; everything else is already filtered out. Liquidity gate: drop avg volume <1M shares.
 
-**Coverage check:** if your finalists look like last run's finalists, you funneled too narrow — the leading sector rotates, so your names should too. Deliberately follow today's leadership, not yesterday's.
+**Coverage check (enforce it):** your finalists should NOT be a copy of last run's. The sector leadership and the day's movers shift intra-session, so your shortlist should shift too. If you find your 2–3 deep-dives are the same names as the prior run, you anchored on the watch list instead of scanning fresh — redo Tier 1/2 from the live quotes. Carrying one genuinely-still-leading name forward is fine; carrying the *whole list* every run is the fixation bug.
 
 ### 3b — PATTERN RECOGNITION = the decision (no chase math, no extension veto)
 For each candidate, get_equity_historicals (daily ~6 months + 30-min recent) and compute the read: MA stack (EMA 20/50/100/200), price structure (HH/HL pivots), RSI(14) + divergence, volume vs average, ATR(14) for stop sizing, and the key support/resistance levels.
@@ -148,7 +151,7 @@ Use this ONLY for an A/A+ setup (4–5 confluence criteria incl ≥1 ⚡) where 
 
 ## Step 5: Log & update memory
 - Update trade_journal.md (new positions, status notes, move closes to CLOSED TODAY) and performance_log.md (append closed trades + refresh the win-rate tally).
-- State in your run log: regime, what you held/bought/sold and why (or "no action — nothing confirmed yet" with the specific level you're waiting on), portfolio value + buying power, and what you're watching for next.
+- State in your run log: regime, **the sectors you ranked + the fresh shortlist of names you scanned this run** (one line — shows you cast the wide net, not just re-checked the watch list), what you held/bought/sold and why (or "no action — nothing confirmed yet" with the specific level you're waiting on), portfolio value + buying power, and what you're watching next (keep your continuity notes — memory is good; just make sure the fresh scan ran too).
 
 ## END-OF-DAY DEBRIEF (first run after the 1:00 PM PDT close — your ~1:15 PM run)
 Don't scan/trade. Instead: finalize the journal, update the performance_log tally (win rate + what's working), confirm every holding has a resting protective stop, and write a short day summary + tomorrow's watch list. Later closed runs (1:30/1:45) just log "closed, debrief done" and exit.
